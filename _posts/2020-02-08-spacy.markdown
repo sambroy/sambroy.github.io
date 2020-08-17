@@ -1,0 +1,35 @@
+---
+layout: post
+title:  "Notes on SpaCy"
+date:   2020-02-08 18:30:15 -0800
+categories: jekyll update
+---
+
+In this post, we will consider some aspects of spaCy that I had to work with. 
+
+Suppose we have a sentence 
+{% highlight python %}
+s1 = "This is an ad-hoc request."
+s2 = "This is an ad - hoc request."
+{% endhighlight %}
+
+The only difference between s1 and s2 is that there's extra space between the hyphen and the words. Let's proceed with ingesting this in spaCy. 
+
+{% highlight python %}
+import spacy
+nlp = spacy.load('en_core_web_sm')
+
+def get_tokens(s):
+    doc = nlp(s)
+    toks = []
+    for token in doc:
+        toks.append(token)
+    return toks
+
+toks1 = get_tokens(s1)
+toks2 = get_tokens(s2)
+assert (toks1 == toks2)
+{% endhighlight %}
+
+# References:
+1. [How to tell SpaCy not to split any intra-hyphen words?](https://support.prodi.gy/t/how-to-tell-spacy-not-to-split-any-intra-hyphen-words/1456)

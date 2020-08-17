@@ -1,0 +1,76 @@
+---
+layout: post
+title:  "BLEURT - ACL 2020"
+date:   2020-07-28 18:30:15 -0800
+categories: jekyll update
+---
+
+We discuss the Bleurt paper that appears in ACL 2020, handles the problem of _learning metrics_
+for some specific NLP tasks.
+Note that there is a [Google blog article](https://ai.googleblog.com/2020/05/evaluating-natural-language-generation.html) on this paper too. This blog article gives a good overview of what's
+going on in this paper, however the following are my short notes, primarily for personal
+understanding. 
+
+In literature, and previous work, when we
+consider _machine translation_ or _data-to-text_ tasks, we often use
+metrics such as BLEU, or ROUGE.
+
+#### Overall goal
+We want to design a metric, and show that this corresponds closely to human experience.
+
+For instance, consider machine translation.
+Humans may discern two sentences as being roughly similar to each other (or not).
+A good metric is one that _mimics_ this process.
+
+#### Motivating examples
+Metrics such as BLEU, ROUGE measure overlaps of n-grams. Thus, such measures fail to
+take into consideration the _semantic similarity_ of two pieces of text (typically,
+sentences). More so, [recent work, ACL 2020](https://www.aclweb.org/anthology/2020.acl-main.448.pdf)
+indicates that small differences in BLEU are not indicative enough of model performance
+(also see this [blog](https://ehudreiter.com/2020/07/28/small-differences-in-bleu-are-meaningless/)).
+
+Recent papers have tried to improve upon these by either proposing
+* **Fully learned metrics** Examples: BEER, RUSE, ESIM etc. This allows more
+_expressivity_ but does require some amount of training data (here, training data
+  means actual ratings: given two sentences `s1` and `s2`, are they close by?)
+* **Hybrid metrics** Examples: YiSi, BERTScore, etc. These combine trained
+elements with handwritten logic (such as for token alignment etc.)
+
+#### Beginning steps
+1. Now that we have BERT, we have access to contextual embeddings of words in sentences.
+  * How do we make use of that? We may consider the two sentences, and consider their
+BERT embeddings, aggregate the embeddings in some way, and then measure the _similarity_
+between the embeddings of the two sentences.
+  * As is usual, the _aggregation step_ is
+usually done via tracking the embedding of the `[CLS]` token.
+  * While this is a feasible approach, there are some issues with this. BERT was trained
+on a certain corpus; so if we pick up data from another domain, the (pretrained)
+embeddings might not be very meaningful by themselves.
+
+2. So, a natural approach is to infuse some _finetuning_ of BERT using data from the new
+domain. Here, we assume that we do have some ratings data, where the data essentially looks
+like `(sentence_1, sentence_2, rating)` where `rating` is (say) a real number between 0
+and 1. However, the ratings data is not very large, so we only get so much mileage from
+this idea.
+  * How do we plan to use such a model?
+
+3. The next idea is to mitigate this problem - we want to get a _lot_ of (synthetic)
+data in order to pretrain the BERT model, before finetuning it on the limited ratings
+data. The main question is how do we get this synthetic ratings data? This is by now,
+a familiar style of thinking - this follows the _weak supervision_  motif of  
+"think label functions instead of labels" (see for instance [Snorkel](https://www.snorkel.ai/)).
+Thus, here too, we will get a whole bunch of synthetic _labeled_ data, and use that
+for pretraining.
+Does this make this metric a "hybrid" metric too? No! Here the _handcrafting_ has been
+folded in the upstream processing, so to speak: the handcrafting here is to devise
+rules to generate the synthetic data. But since we are using the handcrafting to generate
+(a large amount of) training data that will then (hopefully) be smoothed out by the
+training process.
+
+
+
+## References:
+1. [BLEURT paper, ACL 2020](https://www.aclweb.org/anthology/2020.acl-main.704/)
+2. [Google Blog on BLEURT](https://ai.googleblog.com/2020/05/evaluating-natural-language-generation.html)
+3. [Snorkel](https://www.snorkel.ai/)
+4. [Ehud Reiter's blog on evaluations using BLEU](https://ehudreiter.com/2020/07/28/small-differences-in-bleu-are-meaningless/)
