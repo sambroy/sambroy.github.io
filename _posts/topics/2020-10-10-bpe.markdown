@@ -1,0 +1,25 @@
+---
+layout: post
+title:  "bpe related papers"
+date:   2020-07-28 18:30:15 -0800
+categories: jekyll update
+---
+
+notes on bpe.
+
+1. bpe is deterministic. given corpus, find frequent byte pairs. bpe breaks segment into
+unique sequences.
+2. this can pose a problem: model might not learn the compositionality of words, that
+different methods of composition exist.
+3. usually mitigated by using sentencepiece.
+4. bpe dropout paper shows how to overcome this shortcoming in bpe itself.
+rough guidance: use bpe dropout in training, bpe in inference.
+
+
+### Paper list
+* [bpe in nmt](https://arxiv.org/pdf/1508.07909.pdf)
+  * [code](https://github.com/rsennrich/subword-nmt)
+* [notes on bpe](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
+* [bpe dropout](https://arxiv.org/pdf/1910.13267.pdf)
+  * [blog](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html)
+  * [also see this](https://www.groundai.com/project/bpe-dropout-simple-and-effective-subword-regularization/1)

@@ -14,5 +14,7 @@ List of papers related to subword LMs.
 * [bpe dropout](https://arxiv.org/pdf/1910.13267.pdf)
   * [blog](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html)
   * [also see this](https://www.groundai.com/project/bpe-dropout-simple-and-effective-subword-regularization/1)
+* [bpe in nmt](https://arxiv.org/pdf/1508.07909.pdf)
+  * [code](https://github.com/rsennrich/subword-nmt)
 * [sentencepiece paper](https://www.arxiv-vanity.com/papers/1808.06226/)
 * [notes on bpe](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
