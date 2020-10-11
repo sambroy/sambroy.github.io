@@ -32,7 +32,7 @@ for a given word sequence.
   * this is what gives multiple alternatives for segmentations for a word sequence.
 
 Interesting side-effects:
-* Handling mis-spellings. This point is brought out in this [blog](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html).
+* bpe-dropout is robust towards mis-spellings. This point is brought out in this [blog](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html).
 * Normally, we use a decoder to search through the possibilities for the output text.
 Typically we use a greedy decoder or a beam search tree. However, bpe regularization provides another viewpoint:
   * we can utilize the different segmentations of the context according to bpe-dropout (or sentencepiece)
