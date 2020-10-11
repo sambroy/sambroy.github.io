@@ -16,5 +16,7 @@ List of papers related to subword LMs.
   * [also see this](https://www.groundai.com/project/bpe-dropout-simple-and-effective-subword-regularization/1)
 * [bpe in nmt](https://arxiv.org/pdf/1508.07909.pdf)
   * [code](https://github.com/rsennrich/subword-nmt)
-* [sentencepiece paper](https://www.arxiv-vanity.com/papers/1808.06226/)
+* [sentencepiece paper, subword regularization](https://www.arxiv-vanity.com/papers/1808.06226/)
+  * [video](https://vimeo.com/285807834)
+* [subword regularization analysis](https://arxiv.org/pdf/2008.04034.pdf)
 * [notes on bpe](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)

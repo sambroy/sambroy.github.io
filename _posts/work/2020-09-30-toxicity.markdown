@@ -13,6 +13,9 @@ Identify whether any of the popular neural generation models can generate/output
 How do we define "toxic"? There is a [PerspectiveAPI](https://github.com/conversationai/perspectiveapi) that gives a
 toxicity score to a statement. A toxicity score of $$>0.5$$ is considered _toxic_, else non-toxic.
 
+#### References. 
+1. [OWTC - OpenWebTextCorpus](https://skylion007.github.io/OpenWebTextCorpus/)
+2. [Toxicity page on allenai](https://toxicdegeneration.allenai.org/)
 Given a vector $$q$$, and a collection
 of candidate vectors $$h_1, h_2, \cdots , h_n$$, find out the candidates (top-k) that have the largest
 inner products $$q \circ h_i$$.
