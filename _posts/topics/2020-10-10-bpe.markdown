@@ -31,10 +31,13 @@ for a given word sequence.
   pick some of these _merges_ to actually execute.
   * this is what gives multiple alternatives for segmentations for a word sequence.
 
-An interesting side-effect:
+Interesting side-effects:
+* Handling mis-spellings. This point is brought out in this [blog](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html).
 * Normally, we use a decoder to search through the possibilities for the output text.
-Typically we use a greedy decoder or a beam search tree.
-* However, bpe regularization provides another viewpoint:
+Typically we use a greedy decoder or a beam search tree. However, bpe regularization provides another viewpoint:
+  * we can utilize the different segmentations of the context according to bpe-dropout (or sentencepiece)
+  and use the different segmentations to generate suggestions (in an auto-completion scenario).
+  * This gives us options instead of relying on beam search to provide multiple options.
 
 ### sequence to read
 1. [bpe implementation as a notebook](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
