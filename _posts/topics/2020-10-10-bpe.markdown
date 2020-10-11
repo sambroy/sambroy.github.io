@@ -11,7 +11,7 @@ notes on bpe.
 unique sequences. We stop the bpe process according to the vocab size we want.
 
 The good:
-* simple, easy to understand segmentation, easy to implement
+* simple, easy to understand segmentation, [easy to implement](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
 
 The not so good:
 * we would ideally like to give an option to the training algorithm - since we are working
@@ -27,17 +27,17 @@ However, this is a bit complicated.
 * the bpe-dropout paper makes a simple tweak on the bpe idea, introducing a randomness
 step (a _dropout_ step) and this again makes it possible to have multiple segmentations
 for a given word sequence.
+  * in the bpe algorithm, you _merge_ byte pairs in the text. Now, for dropout, you randomly
+  pick some of these _merges_ to actually execute.
+  * this is what gives multiple alternatives for segmentations for a word sequence.
+
+An interesting side-effect:
+* Normally, we use a decoder to search through the possibilities for the output text.
+Typically we use a greedy decoder or a beam search tree.
+* However, bpe regularization provides another viewpoint:
 
 ### sequence to read
-1. http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html
-2. https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html
-3. https://www.groundai.com/project/bpe-dropout-simple-and-effective-subword-regularization/1#S4.T1
-
-### Paper list
-* [bpe in nmt](https://arxiv.org/pdf/1508.07909.pdf)
-  * [code](https://github.com/rsennrich/subword-nmt)
-* [notes on bpe](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
-* [bpe dropout](https://arxiv.org/pdf/1910.13267.pdf)
-  * [blog](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html)
-  * [also see this](https://www.groundai.com/project/bpe-dropout-simple-and-effective-subword-regularization/1)
-  * [code](https://github.com/rsennrich/subword-nmt#advanced-features)
+1. [bpe implementation as a notebook](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
+2. [blog on bpe dropout](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html)
+3. [the bpe dropout paper](https://www.groundai.com/project/bpe-dropout-simple-and-effective-subword-regularization/1#S4.T1)
+4. [implementation of the bpe dropout](https://github.com/rsennrich/subword-nmt/blob/master/subword_nmt/apply_bpe.py)
