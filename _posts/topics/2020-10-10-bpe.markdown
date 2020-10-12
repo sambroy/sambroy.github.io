@@ -16,12 +16,8 @@ We start with
 aaabdaaabac
 ```
 and we find that the byte pair `aa` occurs most often, and we replace it with a
-byte not used in the data, say `Z`.
-
-The wiki gives that we thereby get `ZabdZabac`. Note, that we have made some
-choices here: we adopted a greedy-first way of marking the byte pair `aa`. We could also
-have gone as `aZbdaZbac`. The wiki page also proceeds with _recursive_ byte pair encoding
-(which is what is used in common practice).
+byte not used in the data, say `Z`. We thereby get `ZabdZabac`.
+  * Note, that we have made some choices here: we adopted a greedy-first way of marking the byte pair `aa`. We could also have gone as `aZbdaZbac`. The wiki page also proceeds with _recursive_ byte pair encoding (which is what is used in common practice).
 Can this make a difference in the overall encoding?
 
 2. Note that in the example, we chose the byte pairs according to the string to
