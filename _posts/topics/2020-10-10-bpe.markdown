@@ -15,7 +15,7 @@ substrings/subwords.
 the idea is well motivated:
 1. the main attempt is to take into account the compositionality of words. As one
 example of such compositionality, consider _declension_: when the form of a noun, pronoun, adjective, or article changes to indicate number, grammatical case, or gender (see [wiki](https://en.wikipedia.org/wiki/Declension) or [here](https://study.com/academy/lesson/declension-definition-examples.html#:~:text=For%20example%2C%20in%20a%20sentence,The%20ball%20was%20his.)).
-For instance in English, we pluralize words by adding an `s` (eg. dogs, cats)
+For instance in English, we [pluralize words](https://www.grammarly.com/blog/plural-nouns/#:~:text=Plural%20Noun%20Rules) by adding an `s` (eg. dogs, cats)
 or by adding `es` (eg. buses, taxes, lunches).
 
 2. such subword encodings are commonly used in language models; given this is an
