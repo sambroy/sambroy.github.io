@@ -6,6 +6,29 @@ categories: jekyll update
 ---
 
 notes on bpe
+**basic bpe**
+
+We will start out with some questions & comments:
+
+1. Here is the example from [wikipedia](https://en.wikipedia.org/wiki/Byte_pair_encoding) .
+We start with
+```python
+aaabdaaabac
+```
+and we find that the byte pair `aa` occurs most often, and we replace it with a
+byte not used in the data, say `Z`.
+
+The wiki gives that we thereby get `ZabdZabac`. Note, that we have made some
+choices here: we adopted a greedy-first way of marking the byte pair `aa`. We could also
+have gone as `aZbdaZbac`. The wiki page also proceeds with _recursive_ byte pair encoding
+(which is what is used in common practice).
+Can this make a difference in the overall encoding?
+
+2. Note that in the example, we chose the byte pairs according to the string to
+be encoded. Usually, we run a stage where we derive the "bpe codes" by taking a
+pass through the entire data to find the most frequent byte pairs.
+
+3.
 
 **bpe-dropout paper**
 
@@ -42,7 +65,9 @@ Typically we use a greedy decoder or a beam search tree. However, bpe regulariza
   * This gives us options instead of relying on beam search to provide multiple options.
 
 ### sequence to read
-1. [bpe implementation as a notebook](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
-2. [blog on bpe dropout](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html)
-3. [the bpe dropout paper](https://www.groundai.com/project/bpe-dropout-simple-and-effective-subword-regularization/1#S4.T1)
-4. [implementation of the bpe dropout](https://github.com/rsennrich/subword-nmt/blob/master/subword_nmt/apply_bpe.py)
+1. [check out the wiki page :)](https://en.wikipedia.org/wiki/Byte_pair_encoding)
+2. [bpe implementation as a notebook](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
+3. [blog on bpe dropout](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html)
+4. [the bpe dropout paper](https://www.groundai.com/project/bpe-dropout-simple-and-effective-subword-regularization/1#S4.T1)
+5. [implementation of the bpe dropout](https://github.com/rsennrich/subword-nmt/blob/master/subword_nmt/apply_bpe.py)
+6. [the original gage 1994 paper on bpe](https://www.derczynski.com/papers/archive/BPE_Gage.pdf)
