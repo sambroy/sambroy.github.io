@@ -12,9 +12,15 @@ overview of what bpe (byte pair encoding) is about. in short, it is a form of
 data compression where we compress string data using the _most frequent_
 substrings/subwords.
 
-such subword encodings are commonly used in language models; subwords help improve
-the _oov_ (out of vocabulary) problem. this is primarily an attempt to take into
-account the compositionality of words.
+the idea is well motivated:
+1. the main attempt is to take into account the compositionality of words. As one
+example of such compositionality, consider _declension_: when the form of a noun, pronoun, adjective, or article changes to indicate number, grammatical case, or gender (see [wiki](https://en.wikipedia.org/wiki/Declension) or [here](https://study.com/academy/lesson/declension-definition-examples.html#:~:text=For%20example%2C%20in%20a%20sentence,The%20ball%20was%20his.)).
+For instance in English, we pluralize words by adding an `s` (eg. dogs, cats)
+or by adding `es` (eg. buses, taxes, lunches).
+
+2. such subword encodings are commonly used in language models; given this is an
+attempt to account for the natural compositionality of language, subwords help improve
+the _oov_ (out of vocabulary) problem.
 with a relatively small vocabulary (consisting
 of such subwords), the model will be able to compose various words from subword
 tokens, where such words might otherwise have been accounted for as oov.
