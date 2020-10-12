@@ -5,10 +5,21 @@ date:   2020-10-10 18:30:15 -0800
 categories: jekyll update
 ---
 
-notes on bpe
-**basic bpe**
 
-We will start out with some questions & comments:
+## overview of basic bpe
+the [wikipedia page](https://en.wikipedia.org/wiki/Byte_pair_encoding) gives a good
+overview of what bpe (byte pair encoding) is about. in short, it is a form of
+data compression where we compress string data using the _most frequent_
+substrings/subwords.
+
+such subword encodings are commonly used in language models; subwords help improve
+the _oov_ (out of vocabulary) problem. this is primarily an attempt to take into
+account the compositionality of words.
+with a relatively small vocabulary (consisting
+of such subwords), the model will be able to compose various words from subword
+tokens, where such words might otherwise have been accounted for as oov.
+
+First, some questions & comments:
 
 1. Here is the example from [wikipedia](https://en.wikipedia.org/wiki/Byte_pair_encoding) .
 We start with
@@ -26,7 +37,7 @@ pass through the entire data to find the most frequent byte pairs.
 
 3.
 
-**bpe-dropout paper**
+### bpe dropout paper
 
 1. bpe is deterministic. given corpus, find frequent byte pairs. bpe breaks segment into
 unique sequences. We stop the bpe process according to the vocab size we want.
