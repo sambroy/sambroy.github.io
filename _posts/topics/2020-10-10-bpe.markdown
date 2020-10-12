@@ -28,14 +28,19 @@ aaabdaaabac
 ```
 and we find that the byte pair `aa` occurs most often, and we replace it with a
 byte not used in the data, say `Z`. We thereby get `ZabdZabac`.
-  * Note, that we have made some choices here: we adopted a greedy-first way of marking the byte pair `aa`. We could also have gone as `aZbdaZbac`. The wiki page also proceeds with _recursive_ byte pair encoding (which is what is used in common practice).
+  * Note, that we have made some choices here: we adopted a greedy-first way of marking the byte pair `aa`. We could also have gone as `aZbdaZbac`. The wiki page also proceeds with _recursive_ byte pair encoding (which is what is used in common practice). Also find here, [Rico Sennrich's example of a
+  set of bpe codes](https://github.com/rsennrich/subword-nmt/blob/master/subword_nmt/tests/data/bpe.ref).
 Can this make a difference in the overall encoding?
 
 2. Note that in the example, we chose the byte pairs according to the string to
 be encoded. Usually, we run a stage where we derive the "bpe codes" by taking a
 pass through the entire data to find the most frequent byte pairs.
 
-3.
+3. Note that we usually denote such bpe codes as _pairs_: so the bpe pair `o ther</w>`
+indicates that the two parts of the pair will be _merged_ to produce the encoding.
+Why do we indicate the pair, when all we seem to need is the outcome of the merge?
+This is for book-keeping. This helps us track the total number of merges executed
+in obtaining a word. 
 
 ### bpe dropout paper
 
