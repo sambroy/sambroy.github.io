@@ -40,7 +40,7 @@ pass through the entire data to find the most frequent byte pairs.
 indicates that the two parts of the pair will be _merged_ to produce the encoding.
 Why do we indicate the pair, when all we seem to need is the outcome of the merge?
 This is for book-keeping. This helps us track the total number of merges executed
-in obtaining a word. 
+in obtaining a word.
 
 ### bpe dropout paper
 
@@ -78,8 +78,8 @@ Typically we use a greedy decoder or a beam search tree. However, bpe regulariza
 
 ### sequence to read
 1. [check out the wiki page :)](https://en.wikipedia.org/wiki/Byte_pair_encoding)
-2. [bpe implementation as a notebook](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
+2. [bpe implementation, in a notebook by Ethen Liu](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
 3. [blog on bpe dropout](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html)
 4. [the bpe dropout paper](https://www.groundai.com/project/bpe-dropout-simple-and-effective-subword-regularization/1#S4.T1)
-5. [implementation of the bpe dropout](https://github.com/rsennrich/subword-nmt/blob/master/subword_nmt/apply_bpe.py)
+5. [implementation of the bpe dropout, by Rico Sennrich](https://github.com/rsennrich/subword-nmt/blob/master/subword_nmt/apply_bpe.py)
 6. [the original gage 1994 paper on bpe](https://www.derczynski.com/papers/archive/BPE_Gage.pdf)
