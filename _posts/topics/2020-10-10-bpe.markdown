@@ -42,16 +42,16 @@ pass through the entire data to find the most frequent byte pairs.
 1. bpe is deterministic. given corpus, find frequent byte pairs. bpe breaks segment into
 unique sequences. We stop the bpe process according to the vocab size we want.
 
-The good:
+#### the good:
 * simple, easy to understand segmentation, [easy to implement](http://ethen8181.github.io/machine-learning/deep_learning/subword/bpe.html)
 
-The not so good:
+#### the not so good:
 * we would ideally like to give an option to the training algorithm - since we are working
 at the level of subwords, that is already a bit nebulous. Are we absolutely confident about
 the subword segmentation that our algorithm has chosen, and use that to train our LM?
 **Bottomline**: we would like options for the segmentation.
 
-How is this mitigated in practice?
+#### How is this mitigated in practice?
 * after the bpe paper came out in nmt, the subword regularization paper came out.
 This proposes a way (sentencepiece) that makes it possible to get multiple segmentations
 for a given word sequence.
@@ -63,7 +63,7 @@ for a given word sequence.
   pick some of these _merges_ to actually execute.
   * this is what gives multiple alternatives for segmentations for a word sequence.
 
-Interesting side-effects:
+#### Interesting side-effects:
 * bpe-dropout is robust towards mis-spellings. This point is brought out in this [blog](https://jlibovicky.github.io/2019/11/07/MT-Weekly-BPE-dropout.html).
 * Normally, we use a decoder to search through the possibilities for the output text.
 Typically we use a greedy decoder or a beam search tree. However, bpe regularization provides another viewpoint:
