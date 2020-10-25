@@ -20,3 +20,7 @@ short notes on each of these papers as time goes by.
 * [bigbird](https://arxiv.org/pdf/2007.14062.pdf)
   * [other link](https://github.com/huggingface/transformers/issues/6113)
 * [attention free transformers (aft)](https://openreview.net/pdf?id=pW--cu2FCHY)
+* [performers](https://arxiv.org/pdf/2009.14794.pdf)
+    * [paperswithcode](https://paperswithcode.com/paper/rethinking-attention-with-performers)
+    * [google blog](https://ai.googleblog.com/2020/10/rethinking-attention-with-performers.html)
+
