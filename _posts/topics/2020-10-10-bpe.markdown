@@ -13,17 +13,18 @@ data compression where we compress string data using the _most frequent_
 substrings/subwords.
 
 the idea is well motivated:
-1. the main attempt is to take into account the compositionality of words. As one
+1. the main attempt is to take into account the **compositionality** of words. As one
 example of such compositionality, consider _declension_: when the form of a noun, pronoun, adjective, or article changes to indicate number, grammatical case, or gender (see [wiki](https://en.wikipedia.org/wiki/Declension) or [here](https://study.com/academy/lesson/declension-definition-examples.html#:~:text=For%20example%2C%20in%20a%20sentence,The%20ball%20was%20his.)).
 For instance in English, we [pluralize words](https://www.grammarly.com/blog/plural-nouns/#:~:text=Plural%20Noun%20Rules) by adding an `s` (eg. dogs, cats)
-or by adding `es` (eg. buses, taxes, lunches).
+or by adding `es` (eg. buses, taxes, lunches), among other variants (eg. life -> lives).
 
-2. such subword encodings are commonly used in language models; given this is an
+2. such subword encodings are commonly used in language models (eg. GPT-3); given this is an
 attempt to account for the natural compositionality of language, subwords help improve
 the _oov_ (out of vocabulary) problem.
 with a relatively small vocabulary (consisting
 of such subwords), the model will be able to compose various words from subword
 tokens, where such words might otherwise have been accounted for as oov.
+
 
 First, some questions & comments:
 
@@ -45,7 +46,7 @@ pass through the entire data to find the most frequent byte pairs.
 3. Note that we usually denote such bpe codes as _pairs_: so the bpe pair `o ther</w>`
 indicates that the two parts of the pair will be _merged_ to produce the encoding.
 Why do we indicate the pair, when all we seem to need is the outcome of the merge?
-This is for book-keeping. This helps us track the total number of merges executed
+This is for book-keeping. This helps us track the sequence of merges executed
 in obtaining a word.
 
 ### bpe dropout paper
