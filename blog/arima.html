@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <link rel="stylesheet" href="../css/blogStyle.css">
+    <link rel="stylesheet" href="../css/pygments.css">
+    <title>ARIMA for forecasting</title>
+
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<p>
+
+    <!-- Site navigation menu -->
+<ul class="topnav">
+        <li> <a href="../blog/blog.html"> Writings </a></li>
+    <ul style="float:right;list-style-type:none;">
+        <li><a href="../index.html">Home</a>
+    </ul>
+</ul>
+
+
+<h1>ARIMA for demand forecasting.</h1>
+
+<p>
+
+<h3>TL;DR: </h3>
+<p>In this short article, we work on a problem, using ARIMA and teasing out the various considerations
+    in regard to the problem.
+</p>
+
+<h3>Target Audience:</h3>
+Data Scientists.
+
+<h3>Prerequisites:</h3>
+<ul>
+    <li>Some notion of time-series analysis.</li>
+</ul>
+
+
+<h4>Understanding the data</h4>
+Altogether, the data has 5 fields:
+<ul>
+    <li>
+    rpc: the product code; overall there are 140 product codes in the given data.
+    </li>
+    <li>
+        date: over a time horizon of 262 days from 2014-11-12 to 2015-07-31.
+    </li>
+    <li>
+        sales: this is a numeric field of type integer.
+    </li>
+    <li>
+        price: this is a numeric field of type float.
+    </li>
+    <li>
+        promo: this is a binary variable.
+    </li>
+    <li>
+        oos: out of stock - again, a binary variable.
+    </li>
+</ul>
+
+<h4>Approaches:</h4>
+There are (at least) three different approaches to this problem.
+<ul>
+    <li><i>ARIMA models:</i>
+    This approach consists of ARIMA models and their variants (ARIMAX, VAR, etc.)
+    </li>
+    <li><i>Random Effects Models:</i>
+        Note that the underlying technique for an ARIMA model is actually linear regression, with the regressors chosen
+        suitably, to take the temporal nature of the problem into account. Thus, one other approach can be to use
+        the recently in-fashion regression models, such as Random/Mixed Effects models (also called Generalized
+        Additive Models). Recently, Facebook opensourced a forecaster
+        they call <a href="http://blog.revolutionanalytics.com/2017/02/facebook-prophet.html">Prophet</a>
+        that uses GAM. We will
+        have a preliminary dive-deep into this in order to understand whether they give better RMSE for our problem.
+    </li>
+    <li><i>Recurrent Neural Network Architectures:</i>
+    Given the sequential nature of a time-series, it is natural to think of applying a recurrent network
+        architecture (more specifically, gated RNNs such as LSTMs, GRUs) to this problem.
+     Time permitting,
+        we will use some of these models for comparison. Also, it should be noted that given that there are only at most
+        262 data points for each rpc code, it is not clear how much a recurrent network can learn from the data.
+    </li>
+</ul>
+For each of these approaches, the considerations below apply.
+
+<h4>Baseline:</h4>
+Given the many approaches that we have, what could be a suitable baseline? We choose the ARIMA model without
+exogenous variables as a baseline.
+
+<h4>Considerations:</h4>
+The following considerations apply to the problem; as such all of the above models will need to address these
+in one way or another.
+    <ul>
+    <li><i>Missing Data:</i>
+    The overall time horizon of the data is 262 days. For every RPC, it turns out that the dates for which we do have
+        data, are <i>consecutive</i>. For 54 of these RPCs, we have data for all the 262 days.
+        For some RPCs, we have data for just 1 day (or 3 days, etc.). It is not entirely clear as to whether
+        this scenario can be considered as one with missing data.
+        Typical approaches deal with missing data via imputation. Imputation uses several techniques such as Kalman filters,
+        or (slightly more na&iuml;ve) moving average approaches.
+    </li>
+    <li><i>Stationarity:</i>
+        Understand the autocorrelations in the data, as well as whether the data is covariance-stationary.
+    This will involve plotting the ACF and the PACF functions. This will help in determining the lag factor of
+    the ARIMA model (i.e. the 'q' where q is for the MA lag).
+    </li>
+    <li>
+        <i>Classification of variables:</i> We classify the variables as follows: the variable 'sales' is
+        <i>endogenous</i>, and the variables 'price', 'oos', and 'promo' are all <i>exogenous</i>.
+    </li>
+        <li>
+            <i>Sparsity of regressors:</i>
+            The exogenous variable 'oos' and 'promo' are sparse/rare at times. For instance, if we have a 70:30 split of the
+            data for a RPC code, then at times it turns out that oos is uniformly 0 across the training set. How does
+            this lead to a problem? This cannot therefore be a predictor and the model cannot learn from this
+            variable. Consequently, the ARIMA model fitting routine spits out
+            an error if we try to use this as an exogenous variable.
+        </li>
+ <li>
+      <i>Data Preprocessing:</i>
+     Normalization of the sales and the prices. This is when we are considering multiple rpc codes at the same time.
+        </li>
+    <li>
+        <i>RPC codes as exogenous variables:</i>
+        How about rpc codes as exogenous variables? There are two ways of handling this:
+        (1) Either have separate model for each rpc code. This is the approach we are taking currently.
+        (2) Build a single model where the rpc code is also a exogenous variable. However, now the model needs to be
+        a VAR (vector ARIMA) model, since we would be outputting the 140-length vector corresponding to the 140 rpc codes.
+
+        An advantage of the second approach would be that the model can <i>utilize correlations</i> across the various rpc
+        codes, etc. However for this approach, we would need to carefully normalize/standardize the data across rpc codes.
+    </li>
+    <li>
+        <i>Casting integers as floats:</i> The sales column has type integers. How do we fit these into a ARIMA model?
+        Make them into floats, and then let ARIMA predict floats, and we will round up or down.
+        Which one do we use: rounding up or down?
+    </li>
+    <li>
+        Finding out ARIMAX parameters from the data.
+    </li>
+        <li><i>Choice of Language:</i>
+        Given my comfort with Python over R, I chose Python. Though at times, it felt like I should move to R since
+        there's a lot of online support for desired functionalities.
+        </li>
+</ul>
+
+<h4>Takeaways</h4>
+
+<h4>References</h4>
+<ol>
+    <li><a href="https://blogs.technet.microsoft.com/machinelearning/2016/11/30/cognitive-toolkit-helps-win-2016-cif-international-time-series-competition/">CNTK wins 2016 CIF.
+    </a> This submission used a LSTM in order to win the contest.</li>
+
+    <li>
+    <a href="http://blog.revolutionanalytics.com/2017/02/facebook-prophet.html">Article on Facebook Prophet.</a>
+</li>
+    <li>
+        <a href="https://facebookincubator.github.io/prophet/static/prophet_paper_20170113.pdf">Facebook Prophet Publication.</a>
+    </li>
+    <li>
+        <a href="http://press.princeton.edu/titles/5386.html">Time Series Analysis by James D. Hamilton.</a>
+    </li>
+</ol>
+
+
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
+
+
+
+
+
+
+
+<!-- Sign and date the page, it's only polite! -->
+<address>Created 29 March 2017.<br>
+</address>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+</body>
+</html>

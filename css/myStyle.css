@@ -1,0 +1,113 @@
+body {
+background: url('../images/bg2.jpeg') no-repeat center center fixed;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+padding-left: 10em;
+padding-right: 15em;
+font-family: Georgia, "Times New Roman", Times, serif;
+color: purple;
+font-size: 18px;
+padding-top:70px;
+}
+
+        p{
+        padding-right: 10em;
+        width:1000px
+        }
+
+        h1 {
+        font-family: Cochin, Geneva,Helvetica, Arial,
+        SunSans-Regular, sans-serif;
+        color: blue;
+        text-align: center}
+
+
+        ul.topnav {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #6ab6c5;
+            /* Changed these values so as to have rounded corners for the top nav bar
+            TODO: some bug doesnt make the home button fully span the height of the top nav bar. Check it.*/
+            -webkit-border-radius:15px;
+            -moz-border-radius:15px;
+            -ms-border-radius:15px;
+            border-radius:15px;
+        }
+
+        ul.topnav li {
+            float: left;
+        }
+
+        ul.topnav li a, .dropbtn {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        /* Change the link color to #111 (black) on hover */
+        ul.topnav li a:hover, .dropdown:hover .dropbtn {
+            background-color: #111;
+        }
+
+
+        ul.topnav li a.active {
+            background-color: #4CAF50;
+        }
+
+        @media screen and (max-width: 600px){
+            ul.topnav ul.right,
+            ul.topnav li {float: none;}
+        }
+
+        .dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {background-color: #f1f1f1}
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        img{
+        float:left;
+        margin-top:  0px;
+         margin-bottom: 5px;
+         margin-right: 10px;
+         margin-left:0
+        }
+        }
+    /*
+      This portion makes boundaries on the items of the navbar
+    */
+/*
+        li {
+            border-right: 1px solid #bbb;
+        }
+
+        li:last-child {
+            border-right: none;
+        }
+
+*/

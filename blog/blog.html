@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<meta charset="UTF-8">
+<html>
+<head>
+	<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/blogStyle.css">
+
+    <title>Sambuddha's Blog</title>
+
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="../content/resume.2017.pdf">Resum&eacute;</a></li>
+                <li class="active"><a href="blog.html"><span class="glyphicon glyphicon-book"></span> Writings</a></li>
+                <li><a href="../reading.html"><span class="glyphicon glyphicon-duplicate"></span> Reading List</a></li>
+            </ul>
+
+            <script>
+//GOOGLE SEARCH
+//Enter domain of site to search.
+var domainroot="sambuddharoy.com"
+function Gsitesearch(curobj){ curobj.q.value="site:"+domainroot+" "+curobj.qfront.value }
+</script>
+            <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get"role="search" onSubmit="Gsitesearch(this)">
+                <div class="input-group"> <input name="q" type="hidden" />
+                    <input class="form-control" name="qfront" type="search" required class="searchField" placeholder="Search this site" maxlength="50"/>
+                    <span class="input-group-btn"> <button type="submit" class="search-button btn btn-primary"> <span class="glyphicon glyphicon-search"></span> </button> </span>
+                </div>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- Main content -->
+
+<h1>The Right Wrong Way</h1>
+
+<p>One overarching interest of mine is to understand how problems are solved. Core to this issue is the other question:
+what do we mean by "understanding" itself? A problem rarely "lives" by itself - it co-exists in the neighborhood of
+other similar problems, some easier, some harder. To my mind, understanding a problem principally involves understanding
+this neighborhood, creating a rich fabric of related problems.
+
+More often than not, it is a wrong approach that leads us to the correct approach to solving a problem. At times,
+it is a matter of enumerating wrong approaches, while there may be more efficient ways of ruling out approaches that
+lead to dead ends. Spending the time on wrong approaches can also be thought
+of as engaging with the problem on a deeper level in order to really understand what does work for solving the problem.
+
+This blog will primarily consist of discussions of various problems/algorithms/papers equipped with wrong approaches, hopefully
+guiding us to the correct view of a result.
+</p>
+
+<p>
+I will be organizing my writings into a couple of categories, depending on the target audience:
+   <ul>
+    <li>Expository articles with a focus on <i>high-school mathematics</i>. One of my strong beliefs is that mathematics does not
+    need to be hard - it becomes hard when it stops being play. These articles are an effort to rekindle that spirit of play
+    that underlies exploration and search for beautiful ideas in mathematics.</li>
+    <li>Articles on <i>data science, machine learning</i> and <i>programming</i>. As a component of understanding
+    "understanding", it is important to tease out the simplest parts that constitute the whole of a
+    mathematical argument, to see the interplay between the various argumental pieces. These writings are aimed
+    towards that goal, to elucidate the underpinnings of familiar algorithms/techniques.</li>
+    <li>Paper Discussions. This is my humble effort to engage with, and understand the papers I am
+    going through currently. I am hoping also to accompany the discussions with code walkthroughs
+    when appropriate.</li>
+</ul>
+
+</p>
+Newest blog article:
+<a href="fubini.html">Applications of Fubini</a>
+<!--
+<a href="combinations.html">Generating Combinations.</a>
+-->
+
+<br><br>
+
+<button class="accordion">Generating Combinations (<a href="combinations.html"> link </a>)</button>
+<div class="panel">
+	  <p>
+	  In this short note, we discuss and dissect a program for generating all the combinations of a collection/set of $n$ characters, $r$ at a time.
+For $r$-combinations of $n$ objects, the program will generate all $n \choose r$ combinations.
+          <br><br>Created 19 March 2017.
+    <div>
+        <ul class="topics">
+            <li><a href="combinations.html">programming</a></li>
+        </ul>
+    </div>
+	  </p>
+</div>
+
+<button class="accordion">A Determinantal Identity (<a href="determinant.html"> link </a>)</button>
+<div class="panel">
+    <p>
+        In this note, we discuss a determinantal identity and proceed to prove it. En route, we
+        also show that the square of a number of the
+        form $(a^3 + b^3 + c^3 - 3 a b c)$ is also of the same form.
+        <br><br>Created 23 March 2017.
+    <div>
+        <ul class="topics">
+            <li><a href="determinant.html">high school math</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">On Simpson's Paradox (<a href="simpson.html"> link </a>)</button>
+<div class="panel">
+    <p>In this short note, we present and explain Simpson's paradox based on the simplest examples possible.<br>
+        <br>
+    Created 8 June 2017.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">data science</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">Applications of Fubini (<a href="fubini.html"> link </a>)</button>
+<div class="panel">
+    <p>
+        We present and describe Fubini's principle. We also provide short (and hopefully sweet)
+        examples/illustrations of the method.
+        <br>
+        <br>
+        Created 15 June 2017.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">high school math</a></li>
+            <li><a href="blog.html">olympiads</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">An example for integration by parts (<a href="integ-by-parts.html"> link </a>)</button>
+<div class="panel">
+    <p>
+        We break up the steps involved in computing the following integral: $\int e^x \sin x \, dx$.
+        <br>
+        <br>
+        Created 13 July 2017.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">high school math</a></li>
+            <li><a href="blog.html">olympiads</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">Paper Discussion: Be careful what you backpropagate (<a href="careful-backprop.html"> link </a>)</button>
+<div class="panel">
+    <p>
+        Short notes on the <a href="https://arxiv.org/pdf/1707.04199v1.pdf">
+        Be careful what you backpropagate</a> paper.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">deep learning</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">Paper Discussion: Pointer Nets (<a href="ptrnet.html"> link </a>)</button>
+<div class="panel">
+    <p>
+        Short notes on the <a href="https://arxiv.org/pdf/1506.03134.pdf">Pointer Net</a> paper.
+        Coming soon.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">deep learning</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">Paper Discussion: Attention is all you need.</button>
+<div class="panel">
+    <p>
+        Short notes on the <a href="https://arxiv.org/abs/1706.03762">Attention is all you need</a> paper.
+        Coming soon.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">deep learning</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">Paper Discussion: Submodularity and Summarization</button>
+<div class="panel">
+    <p>In this note, we discuss the confluence of two of my favorite topics - submodularity
+        and summarization as in <a href="http://www.aclweb.org/anthology/P13-1101">this</a> paper.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">machine learning</a></li>
+            <li><a href="blog.html">submodularity</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">Paper Discussion: Submodularity and Graph Density</button>
+<div class="panel">
+    <p>In this note, I present some of the underlying ideas and considerations
+        that did not make the cut in this <a href="../pdfs/papers/density.fsttcs.12.pdf">FSTTCS12</a> paper.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">graph density</a></li>
+            <li><a href="blog.html">submodularity</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">On Gated Recurrent Units</button>
+<div class="panel">
+    <p>In this note, we describe the considerations that led to the formulation of GRUs.
+        Coming soon.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">deep learning</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<h3>Articles:</h3>
+<p>
+The following consists of some surveys or observations in the course of reading various papers.
+    These are more like notes on specific papers rather than surveys. These short notes are largely informal; at times they are a study of a specific part of a paper. Constructive comments (such as better ways to view a result, mistakes in understanding points of the papers) are welcome. The writing of these notes is primarily for purposes of clarification of my own understanding.
+At some point I would like to revisit these and clean/incorporate these in the blog above, but for now I will leave the
+    pdfs on here.
+    <br><br>
+    Copyright for all of these short notes belongs solely to the author. Some of these notes were made using TeXmacs.
+</p>
+
+<button class="accordion">On H&ouml;lder's inequality ( <a href="../content/holder.pdf">link</a> ) </button>
+<div class="panel">
+    <p>In this note, we show how to understand and derive H&ouml;lder's inequality
+        via the powerful technique of Lagrangian Relaxations.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">inequalities</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<button class="accordion">On Metrical Task Systems ( <a href="../content/mts.pdf">link</a> ) </button>
+<div class="panel">
+    <p>This contains notes on <a href="http://www.cs.huji.ac.il/~nati/PAPERS/bls_online.pdf">this seminal paper</a> by Borodin,
+        Linial and Saks. We end the notes by extracting a cute puzzle involving randomness from the paper.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">optimization</a></li>
+            <li><a href="blog.html">online algorithms</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+<button class="accordion">On Bregman Divergences ( <a href="../content/bregman.pdf">link</a> ) </button>
+<div class="panel">
+    <p>Free-form notes on Bregman divergences and insights/intuition about the same, along with applications
+        to the four-point inequality.
+    <div>
+        <ul class="topics">
+            <li><a href="blog.html">optimization</a></li>
+        </ul>
+    </div>
+    </p>
+</div>
+
+<!--
+ I needed to put this javascript block at the very bottom after the accordion class has been
+ called - twice. I clearly do not understand javascript at all.
+-->
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
+
+<br><br>
+    <!-- Sign and date the page, it's only polite! -->
+<address>Last updated 14 June 2017.<br>
+</address>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+
+</body>
+</html>

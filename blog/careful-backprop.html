@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <link rel="stylesheet" href="../css/blogStyle.css">
+    <link rel="stylesheet" href="../css/pygments.css">
+    <!--
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    -->
+    <title>Paper Discussion: Be careful what you backpropagate</title>
+
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<p>
+
+    <!-- Site navigation menu -->
+<ul class="topnav">
+        <li> <a href="../blog/blog.html"> Writings </a></li>
+    <ul style="float:right;list-style-type:none;">
+        <li><a href="../index.html">Home</a>
+    </ul>
+</ul>
+
+
+<h1>Paper Discussion: Be careful what you backpropagate.
+</h1>
+
+<p>
+
+<h3>TL;DR: </h3>
+<p>Some (short) notes on the <a href="https://arxiv.org/pdf/1707.04199v1.pdf">
+    Be Careful What You Backpropagate: A Case For
+    Linear Output Activations & Gradient Boosting
+</a> paper
+    by Oland, Bansal, Dannenberg and Raj (2017).
+</a>
+</p>
+
+<h3>Target Audience:</h3>
+Self, Deep learning enthusiasts.
+
+<h3>Prerequisites:</h3>
+<ul>
+    <li>Some knowledge of loss functions, backpropagation, gradient boosting.</li>
+</ul>
+
+<h3>Summary:</h3>
+<ul>
+    <li>
+        This paper questions the assumptions that lead to using the
+        <i>softmax</i> function (or variants thereof) as an activation
+        function in deep networks.
+    </li>
+    <li>
+        The outcome of this paper is that linear activation functions
+        seem to outperform softmax functions, when the relevant <i>metrics</i>
+        are classification accuracy, as well as time to converge.
+    </li>
+</ul>
+
+
+<h3>The Story:</h3>
+For this problem, we will do the following:
+<ul>
+
+    <li>
+        The main ideas behind this work.
+        <ul>
+            <li>How to collect training data for this problem, especially for intractable problems
+                such as the TSP.</li>
+            <li>Why existing models underperform, and what are the steps
+                this paper takes in order to improve upon the existing models.</li>
+        </ul>
+    </li>
+    <li>
+        There is <a href="https://github.com/ikostrikov/TensorFlow-Pointer-Networks">Tensorflow code</a>
+        by Ilya Kostrikov, based on the paper. We will do a walk-through of that code. The code by
+        Kostrikov considers the problem of <i>sorting</i>. Note that Chanlaw
+        <a href="https://github.com/Chanlaw/pointer-networks">forks</a> Kostrikov's code to
+        handle the case of convex hulls.
+    </li>
+    <li>
+        Also read https://medium.com/@devnag/pointer-networks-in-tensorflow-with-sample-code-14645063f264
+    </li>
+</ul>
+
+<h3>Core Problem:</h3>
+<ul>
+    <li></li>
+</ul>
+
+<h3>Questions:</h3>
+<button class="accordion">
+    Why do we use the <i>tanh</i> activation instead of <i>sigmoid</i> before the softmax?
+</button>
+<div class="panel">
+    <p>
+        The functions tanh and sigmoid differ by a scaling factor (a stretch). Observe what
+        happens to the weights as we change the scaling factors.
+    </p>
+</div>
+
+<button class="accordion">
+    Relations with energy, deep belief nets in the way we are considering the interaction
+    between the encoder and the decoder outputs?
+</button>
+<div class="panel">
+    <p>
+        Fill up.
+    </p>
+</div>
+
+<h3>References:</h3>
+<ul>
+    <li>
+        <a href="https://arxiv.org/abs/1406.1078">The seq2seq paper of Cho. et al.</a>
+    </li>
+    <li>
+        <a href="https://www.tensorflow.org/tutorials/seq2seq">Tensorflow Seq2Seq tutorial</a>
+    </li>
+    <li>
+        <a href="http://arxiv.org/abs/1409.3215">Sutskever et al. - Seq2Seq.</a>
+    </li>
+</ul>
+
+<!--
+<div class='embed-responsive' style='padding-bottom:150%'>
+    <object data='../jaitly-pointernetworks.pdf' type='application/pdf' width='100%' height='100%'></object>
+</div>
+-->
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
+
+
+
+
+
+
+
+<!-- Sign and date the page, it's only polite! -->
+<address>Created 23 March 2017.<br>
+</address>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+</body>
+</html>

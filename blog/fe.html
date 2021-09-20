@@ -1,0 +1,429 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <link rel="stylesheet" href="../css/pygments.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/blogStyle.css">
+
+    <title>An excursion on Functional Equations</title>
+
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="../content/resume.2017.pdf">Resum&eacute;</a></li>
+                <li class="active"><a href="blog.html"><span class="glyphicon glyphicon-book"></span> Writings</a></li>
+                <li><a href="../reading.html"><span class="glyphicon glyphicon-duplicate"></span> Reading List</a></li>
+            </ul>
+
+            <script>
+//GOOGLE SEARCH
+//Enter domain of site to search.
+var domainroot="sambuddharoy.com"
+function Gsitesearch(curobj){ curobj.q.value="site:"+domainroot+" "+curobj.qfront.value }
+</script>
+            <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get"role="search" onSubmit="Gsitesearch(this)">
+                <div class="input-group"> <input name="q" type="hidden" />
+                    <input class="form-control" name="qfront" type="search" required class="searchField" placeholder="Search this site" maxlength="50"/>
+                    <span class="input-group-btn"> <button type="submit" class="search-button btn btn-primary"> <span class="glyphicon glyphicon-search"></span> </button> </span>
+                </div>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- Main content -->
+
+<h1>An excursion on Functional Equations.</h1>
+
+
+<div>
+    <ul class="topics">
+        <li><a href="blog.html">high school math</a></li>
+        <li><a href="blog.html">olympiads</a></li>
+    </ul>
+</div>
+
+
+<p>
+
+<h3>TL;DR: </h3>
+<p>In this post, we discuss some functional equations leading to the (somewhat tricky)
+    functional equation that appeared in this year's
+    <a href="https://www.imo-official.org/year_info.aspx?year=2017">International Mathematics Olympiad
+        (IMO 2017)</a> held at Rio, Brazil this month.
+</p>
+
+<h3>Target Audience:</h3>
+High-school students, puzzle enthusiasts.
+
+<h3>Prerequisites:</h3>
+The beauty of functional equations (FE in short) is that it does not require much beyond high
+school mathematics, as far as techniques go.
+
+<h3>Background and Why:</h3>
+<p>
+    Functional equations have always been a personal favorite, ever since I got
+    introduced to them in the IMO Training Camp, way back in 1993, by
+    Dr. B. J. Venkatchala (BJV in short to students).
+    They also appear to be
+    favorites for problems at olympiads, perhaps because they do not require much formal
+    training, but some level of ingenuity in solving them.
+</p>
+<p>
+    The aim in this post is to <i>elucidate</i> the thought process that goes into
+    solving such FEs, and also to motivate the reader to <i>create</i> interesting
+    new FEs (and who knows, even propose them for the IMO!).
+</p>
+
+<h3>Resources:</h3>
+<p>
+    There are good resources available for FEs, some of which are online.
+    <ul>
+    <li>
+        <a href="http://web.evanchen.cc/handouts/FuncEq-Intro/FuncEq-Intro.pdf">This article</a>
+        by <a href="http://web.evanchen.cc/">Evan Chen</a> is quite comprehensive.
+        The interested reader may want to check out the recipes for solving FEs as outlined
+        in that article.
+    </li>
+    <li>
+        Dr. B. J. Venkatchala has written a
+        <a href="http://www.amazon.in/Functional-Equations-Revised-Updated-2nd/dp/8172867816">book</a>
+        on the topic. This is a good read for Olympiad enthusiasts.
+    </li>
+    <li>
+        Another fantastic resource for Olympiad material is the site,
+        <a href="http://artofproblemsolving.com/wiki/index.php?title=IMO_Problems_and_Solutions">
+            The Art of Problem Solving
+        </a>.
+    </li>
+    <li>Another resource that I have not really gotten time to look more into, but
+    seems pretty useful is <a href="http://www.imomath.com/index.php?options=338">this</a>
+    site by Marko Radovanovic.
+    </li>
+</ul>
+</p>
+
+<h3>The Story:</h3>
+In this post, we will do the following:
+<ul>
+    <li>
+        We will highlight the problem that appeared in IMO 2017
+    </li>
+    <li>
+        We will solve some other problems, to get warmed up.
+    </li>
+    <li>
+        Then come back to attack the IMO 2017 FE problem.
+    </li>
+</ul>
+
+<h4>The problem:</h4>
+The problem that appeared as Problem 2 in the IMO 2017 reads as follows.
+This problem was posed by Dorlir Ahmeti who has also proposed beautiful FE problems for other
+IMOs
+(such as <a href="http://artofproblemsolving.com/wiki/index.php?title=2015_IMO_Problems/Problem_5">Problem 5 in IMO 2015</a>).
+For the purpose of this post, we will call this
+<p>
+    <b>Problem 1:</b>
+    Let $\mathbb{R}$ be the set of real numbers. Determine all functions
+    $f: \mathbb{R} \rightarrow \mathbb{R}$, such that, for all real numbers
+    $x$ and $y$,
+    $$
+    f(f(x)f(y)) + f(x+y) = f(xy)
+    $$
+</p>
+
+<h4>Tips before we proceed:</h4>
+Here are some tips that might help in attacking FE problems.
+<ol>
+    <li>
+        First try to memorize the very statement of the problem. How does this
+        help? In order to memorize the statement, you are involuntarily forced
+        to engage with the problem and break it up into chunks that you can
+        remember.
+        <br>
+        For instance, for the above, we would thereby internalize that on the
+        LHS the first term <i>looks like</i> $f(f())$, while the other terms consist of a single
+        application of $f$.
+    </li>
+    <li>
+        Homogeneous vs. non-homogeneous. As we can see above, all of the terms
+        in the FE of Problem 1 contain a $f()$ term, i.e. this is a homogenous
+        FE. Cauchy's FE (see this <a href="http://web.evanchen.cc/handouts/FuncEq-Intro/FuncEq-Intro.pdf">article</a>
+        for instance)
+        is also homogeneous. Problem 3 below would be an example of a non-homogeneous FE.
+        A homogeneous FE will always have the solution $f(x) = 0$ for instance.
+    </li>
+    <li>
+        The above are in addition to the usual tips that apply to such problems: set usual values
+        (say, $0$, $1$) for
+        the variables in the FE (here, its $x$, $y$). For more such tips/tricks,
+        refer to <a href="http://web.evanchen.cc/handouts/FuncEq-Intro/FuncEq-Intro.pdf">this exposition</a>.
+    </li>
+    <li>For brevity, call the given FE as $P(x, y)$ so that it is easier to
+    index/remember which values of $x$ and $y$ are being substituted, and what is the
+    outcome of a specific substitution.</li>
+    <li>
+        This tip is a no-brainer but is at times easy to overlook. Given a FE,
+        the first effort should be to conjure up (at least) one solution that
+        "seems to fit" the FE. For some FEs this may be harder than it appears
+        at first - that should be an indication of the difficulty of the FE.
+    </li>
+    <li>
+        In the other direction, while having a solution at hand that does fit the
+        FE, one should also be open to the possibility of other solutions.
+    </li>
+</ol>
+<h4>The problem(s):</h4>
+We will warm up to the IMO 2017 problem via a few other
+<i>building blocks</i>. We will also encounter/solve some other
+problems along the way.
+<p>
+    <b>
+        Problem 2:
+    </b>
+    Let $\mathbb{R}$ denote the set of all real numbers, and let
+    $f: \mathbb{R} \rightarrow \mathbb{R}$ be such that
+    $$
+    f(f(x)) = x
+    $$ for every $x \in \mathbb{R}$.
+    Prove that $f$ is $1-1$ (i.e. injective) and onto; thus
+    <i>bijective</i>.
+</p>
+<p>
+    <b>Solution: </b>
+    <br>
+    Let's see injectivity first. For this, we would need to prove
+    $$
+    f(x) = f(y) \implies x = y
+    $$
+    So, suppose that we have $x, y$ such that $f(x) = f(y)$.
+    Apply $f$ once more to get $f(f(x)) = x$ and $f(f(y)) = y$.
+    Together these equations give that
+    $f(f(x)) = f(f(y)) = x = y$, thus implying $x = y$.
+    <br>
+    Proving that $f$ is <i>onto</i> is even simpler. Given any $x$,
+    the function $f$ maps $f(x)$ to the value $x$. Thus, $f$ is
+    onto. Done. Finito. Sweet.
+    <br>
+    Thus we have shown that $f$ is a bijection.
+</p>
+<p>
+    <b>
+        Problem 2a:
+    </b>
+    Same circumstance as in Problem 2, just that $f(f(x)) = x + a$ for
+    every $x \in \mathbb{R}$, where $a \in \mathbb{R}$ is a <i>constant</i>.
+    Prove that $f$ is a bijection.
+</p>
+<p>
+    This should be easy to see, following the same steps as for Problem 2.
+</p>
+<p>
+<b>Problem 3:</b>
+Let $\mathbb{R}$ denote the set of all real numbers. Find all functions
+$f: \mathbb{R} \rightarrow \mathbb{R}$ such that
+$$
+f(x^2 + f(y)) = y + f(x)^2
+$$
+for all $x, y \in \mathbb{R}$.
+</p>
+<p>
+    <b>Solution Approach:</b>
+    <br>
+    The solution approach will be to break up the problem as follows.
+    We fix the notation such that we refer to the FE with variables $x$
+and $y$ as $P(x, y)$.
+    <h5>Baby-step 1: Bijectivity</h5>
+    We will first substitute common
+    values (say, $x = 0/1$, $y = 0/1$) to derive outcomes from $P(x, y)$.
+    Using $P(0, y)$ we see that
+\begin{equation}
+f(f(y)) = y + f(0)^2
+\label{eqn:1}
+\end{equation}
+Thus, by <b>Problem 2a</b>, $f$ is a bijection.
+
+    <h5>Baby-step 2: Find individual values of $f(x)$ for a few specific
+    choices of $x$</h5>
+    The goal here is to perhaps elucidate the $f()$ landscape from these
+    specific values.
+    <br>
+Oftentimes, one may feel that this part of the exercise turns out to be
+the most useless, since often, some of the values found do not really
+participate directly in the final solution. Nevertheless, this is an important
+step in that, it moulds our thought and intuition about the problem.
+</p>
+<p>
+    Let us go through such an exercise for this FE. We can for instance
+    set $y = 0$ in the equation above to get $f(f(0)) = f(0)^2$.
+</p>
+<h5>Baby-step 3:</h5>
+This is not really an aim but more like a procedure/tip. The idea is
+to <i>neutralize</i> as many terms in the FE as possible. While at times
+this is achieved by substituting $x = 0$ or $y = 0$, at times we may
+also try by placing $f(c) = 0$ for some $c$. Considering $P(x, c)$ we get
+$$
+f(x^2 + f(c)) = c + f(x)^2
+$$
+which is equivalent to $f(x^2) = c + f(x)^2$ (since $f(c) = 0$).
+
+<h5>Baby-step 4: figure out $f(0)$.</h5>
+<span style="color:#7c00b9">This is where the magic really happens</span>, when we realise that we can
+apply $f$ to either side of the FE and get something reasonable
+courtesy Equation \eqref{eqn:1}.
+$$
+f(f(x^2 + f(y)) = f(y + f(x)^2)
+$$
+To the LHS, we apply Baby-step 1 to get that
+$$
+f(y + f(x)^2) = x^2 + f(y) + f(0)^2
+$$
+But now notice that if we place $c$ such that $f(c) = 0$, this equation becomes
+$$
+f(y + f(c)^2) = c^2 + f(y) + f(0)^2.
+$$
+which means $f(y) = c^2 + f(y) + f(0)^2$, or in other words
+$c^2 + f(0)^2 = 0$. This implies that $c = 0$ and $f(0) = 0$.
+
+But, what if there is not such a $c$ i.e. no such $c$ such that $f(c) = 0$?
+Well, we proved that $f$ is <i>surjective</i> (i.e. onto), so this cannot
+happen!
+
+<p>
+    Let's recap what we have so far:
+    <ul>
+    <li>$f(0) = 0$</li>
+    <li>$f$ is 1-1, onto.</li>
+    <li>$f(f(y)) = y$ for all $y$ (Baby-step $1$ with our new knowledge, $f(0) = 0$)</li>
+</ul>
+At this point it will also help to recall the original FE:
+$$
+f(x^2 + f(y)) = y + f(x)^2
+$$
+</p>
+<h5>Baby-step 5: figure out $f(1)$.</h5>
+<p>
+    This will involve sprinkling $P(x, y)$ with lots of settings where
+    $x$ or $y$ (or both) are $1$, while making use of what we learnt above.
+    Let's start!
+
+    <ul>
+    <li>$P(1, 1) \implies f(1 + f(1)) = 1 + f(1)^2$</li>
+    <li>$P(1, 0) \implies f(1) = f(1)^2$</li>
+</ul>
+Aha! So $P(1, 0)$ implies that $f(1) = 0$ or $f(1) = 1$. If $f(1) = 0$,
+then use $P(1, 1)$ to show that $f(1 + 0) = 1 + 0$ i.e. $f(1)  = 1$ -
+a clear contradiction!
+<br>
+So $f(1) = 1$. How about $f(2)$? Again, $P(1, 1)$ directly gives
+$f(2) = 2$. Hmm... maybe we are now in reach of
+showing that $f(x) = x$ for all $x \in \mathbb{Z}$?
+</p>
+
+<h5>Baby-step 6: prove $f(x) = x$ for all $x \in \mathbb{Z}$.</h5>
+This is pretty much the same as the calculation in Baby-step 5, where
+instead of considering $P(1, 0)$ we will consider $P(1, y)$ to get
+$$
+f(1 + f(y)) = y + 1
+$$
+That doesn't seem to help us much does it? But wait, we know a couple of things
+about $f$: that $f$ is 1-1 (i.e. injective), and that $f(f(y))= y$. So that means
+$f(f(y + 1)) = y + 1$, and injectivity implies now that
+$$
+1 + f(y) = f(y + 1)
+$$
+Whoa! we are done with our aim for this baby-step (for instance, by induction on $y$,
+moving both <i>back</i> as well as <i>forward</i> from $y = 0$ to cover all
+the integers).
+
+<h5>Baby-step 7:</h5>
+<b>Target:</b> The only target left now is to prove $f(x) = x$ for all
+$x \in \mathbb{R}$.
+<h4>Takeaways</h4>
+<ul>
+    <li>
+
+    </li>
+</ul>
+
+
+<div>
+    <ul class="topics">
+        <li><a href="google.com">high school math</a></li>
+        <li><a href="google.com">olympiads</a></li>
+    </ul>
+</div>
+
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
+
+
+
+<!-- Sign and date the page, it's only polite! -->
+<address>Created 23 March 2017.<br>
+</address>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+</body>
+</html>

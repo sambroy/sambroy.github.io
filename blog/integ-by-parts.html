@@ -1,0 +1,443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <link rel="stylesheet" href="../css/pygments.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/blogStyle.css">
+    <link rel="stylesheet" href="../css/simpson.css">
+
+    <title>An example for integration by parts</title>
+
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="../content/resume.2017.pdf">Resum&eacute;</a></li>
+                <li class="active"><a href="blog.html"><span class="glyphicon glyphicon-book"></span> Writings</a></li>
+                <li><a href="../reading.html"><span class="glyphicon glyphicon-duplicate"></span> Reading List</a></li>
+            </ul>
+
+            <script>
+//GOOGLE SEARCH
+//Enter domain of site to search.
+var domainroot="sambuddharoy.com"
+function Gsitesearch(curobj){ curobj.q.value="site:"+domainroot+" "+curobj.qfront.value }
+</script>
+            <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get"role="search" onSubmit="Gsitesearch(this)">
+                <div class="input-group"> <input name="q" type="hidden" />
+                    <input class="form-control" name="qfront" type="search" required class="searchField" placeholder="Search this site" maxlength="50"/>
+                    <span class="input-group-btn"> <button type="submit" class="search-button btn btn-primary"> <span class="glyphicon glyphicon-search"></span> </button> </span>
+                </div>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- Main content -->
+
+<h1>An example for integration by parts.</h1>
+
+<div>
+    <ul class="topics">
+        <li><a href="blog.html">high school mathematics</a></li>
+        <li><a href="blog.html">olympiads</a></li>
+    </ul>
+</div>
+
+<p>
+
+<h3>TL;DR: </h3>
+We break up the steps involved in computing the following integral:
+$$
+\int e^x \sin x \, dx
+$$
+<h3>Target Audience:</h3>
+High school students, olympiad enthusiasts.
+
+</p>
+
+<h3>Why:</h3>
+<p>
+    Integration (as also differentiation)
+    is one of the essential tools in a machine learning practitioner's
+    toolbox. One of the primary techniques utilized in integration is
+    integration by parts, and to high schoolers applications of
+    integration by parts often appear somewhat
+    magical.
+    The material for this article arose while discussing the problem with a
+    friend in high school. The desire in this article is to
+    <ul>
+    <li>Show how to utilize integration by parts, motivate why the need.</li>
+    <li>Show how to think about this problem in multiple ways.</li>
+</ul>
+I plan to relegate some of the discussion in a followup article, just so that the
+current article is the right byte-sized.
+</p>
+
+<h3>How:</h3>
+This is how we will proceed wrt this topic.
+<ul>
+    <li>We will look at our repertoire of techniques and try to form-fit some of these
+        for the problem.</li>
+    <li>This will not entirely work out, so we will start exploring tweaks in
+        order to solve the problem.</li>
+    <li>The <b>icing</b>: after solving the original problem, we will not rest
+        satisfied. This will lead us to other interesting solutions,
+        wherein the techniques can be used in many other places.</li>
+</ul>
+
+<h3>The techniques at hand.</h3>
+<p>
+    We will assume here that the reader is aware of some of the more effective techniques
+    in integration: integration by parts and integration by substitution.
+</p>
+<p>
+    Out of the two techniques mentioned, <b>integration by substitution</b> is perhaps the
+    simpler one. It is a kind of form-fitting where it leaps to the eye that a
+    smart substitution can solve the integral for us. For instance, looking at
+    $$
+    \int \frac{\ln x}{x}\, dx
+    $$
+    we might realize that $\frac{d}{dx} (\ln x) = \frac{1}{x}$, and so substituting
+    $t = \ln x$ will solve the problem for us (I leave it to the reader to complete
+    solving this indefinite integral).
+</p>
+<p>
+    <b>Integration by parts</b>, in comparison, is slightly more sophisticated. This is how
+    integration by parts generally reads:
+    given functions $u$ and
+    $v$,
+    $$
+    \int u \, dv = uv - \int v \, du
+    $$
+    While this is the form that high schoolers may be usually familiar with is, it also
+    helps to remember the more <i>symmetric</i> form of the equality above:
+    $$
+    uv = \int u \, dv  + \int v \, du
+    $$
+    The basic idea behind integration by parts is this: it may happen that $\int u \, dv$
+    strikes no bells,
+    and might be harder to integrate directly (or by substitution), we might be able to
+    solve the easier $\int v \, du$.
+</p>
+
+<h3>The problem:</h3>
+<p>
+    The problem is to compute the (indefinite) integral  $I = \int e^x \sin x \, dx$. Considering
+    the form of the integrand, we are unable to directly apply
+    substitution to the problem. Given this, it might make sense to try the other
+    technique in our repertoire - integration by parts! Ok, so let's start.
+</p>
+
+<h4>Solution 1 - Start off:</h4>
+<p>
+    Once we have decided to apply integration by parts, we realise that we have a
+    couple of options here. Either $dv = e^x \, dx$ or $dv = \sin x\, dx$. In the former
+    case, $v = e^x$, while in the latter $v = \cos x$. Let us pursue both of these
+    possibilities as independent threads:
+    <ol>
+    <li>$dv = e^x \, dx$, $u = \sin x$ gives $v = e^x$ and $du = \cos x\, dx$. So
+        plugging this into the equation for integration by parts, we get:
+        $$
+        I = \int u\, dv = e^x \sin x - \int e^x \cos x\, dx
+        $$
+    </li>
+    <li>
+        $dv = \sin x\, dx$, $u = e^x$ gives $v = -\cos x$ and $du = e^x\, dx$. Plugging
+        these values into the equation for integration by parts again, we get:
+        $$
+        I = \int u\, dv  = - e^x \cos x - \int e^x (- \cos x)\, dx
+        = -e^x \cos x + \int e^x \cos x \, dx
+        $$
+    </li>
+</ol>
+</p>
+
+<h4>And... finish!</h4>
+<p>
+    Ok, so now we have two expressions for $I$ and the <i>very interesting thing</i>
+    is that, in one of the expressions we have $\int e^x \cos x dx$ while in the other
+    we have the same integral with an <i>opposite</i> sign! So if we add the two expressions
+    for $I$, the pesky integral cancels away, and we get (and remembering to place the
+    arbitrary constant $c'$):
+    $$
+    2I = e^x (\sin x - \cos x) + c'
+    $$
+    which brings us to the solution:
+    $$
+    I = \frac{e^x (\sin x - \cos x)}{2} + c.
+    $$
+    Done. Finito. (No magic about $c'$ and $c$. We just wanted to reserve
+    c for the arbitrary constant in the last line; if you want, $c' = 2c$.)
+</p>
+
+<h4>Ok.. that was a bit too quick!</h4>
+Yes, it was! We applied integration by parts twice, considering different parts of
+the integrand as $u$ or $v$ et voil&agrave;, we added the result and got the answer!
+<p>
+    Let's slow this process down. Suppose it hadn't struck us that we could
+    apply integration by parts <i>twice</i> and change the roles between $u$ and $v$,
+    what could we do then?
+</p>
+<p>
+    So, suppose we had applied integration by parts only once, and got
+    $$
+    I = \int u\, dv = e^x \sin x - \int e^x \cos x\, dx
+    $$
+    It looks that we are stumped here, since, if we applied another integration by
+    parts to solve/simplify $\int e^x \cos x\, dx$, we would <i>get back</i>
+    $\int e^x \sin x\, dx$ and no progress would be made.
+
+</p>
+<p>
+    Well at least let's compile the new information we do have. Let us pull
+    the integral $\int e^x \cos x dx$ on the RHS over to the LHS and collect
+    terms to get (along with the obligatory arbitrary constant $c$):
+    $$
+    I_1 = \int e^x (\sin x + \cos x)\, dx = e^x \sin x + c
+    $$
+</p>
+
+<h4>The bigger picture?</h4>
+From the specific example in $I_1$, we want to tease out a more methodical way
+of approaching the problem.
+
+<h5>Generalize!</h5>
+One constant effort in Mathematics is to generalize any situation that we come across.
+In the integration by parts above, we see that $e^x$ factorizes nicely precisely because
+$\frac{d}{dx}(e^x) = e^x$. We see that the situation in the integral $I_1$ above
+generalizes to an arbitrary function $f(x)$ (instead of $f(x) = \sin x$) as follows:
+$$
+I_2 = \int e^x [f(x) + f'(x)]\, dx = e^x f(x) + c
+$$
+This is an important identity that is useful to remember, and comes handy for
+many problems in indefinite integrals.
+<br>
+<b>Aside:</b> Note that this identity aligns with the (second) pattern for
+integration by parts, i.e.
+$$
+uv = \int u \, dv  + \int v \, du
+$$
+
+<h5>Symmetry</h5>
+So the one identity we have for $I_1$ is by instantiating $f(x) = \sin x$ in the
+identity for $I_2$.
+Why stop here,
+and why not instantiate $f(x) = \cos x$ too? One may think of $\sin x$ and $\cos x$ as
+<i>sibling</i> functions, so if we are applying some result (like for $I_2$ above)
+to $\sin x$, why not apply the same to $\cos x$ too? This yields
+$$
+I_3 = \int e^x(\cos x - \sin x)\, dx = e^x \cos x + c
+$$
+
+<h5>And finish.</h5>
+Once again, we have $I_1$ and $I_3$ - look again at the LHS of either equation.
+If we subtract $I_3$ from $I_1$, we get the integral (well $2\times$) that we
+require, i.e. $\int e^x \sin x\, dx$. Once again we are done with the problem!
+
+<h4>Yet another solution - the <i>real</i> Solution 2!</h4>
+<p>
+Note that in both of the solutions above, we had to realise that we can
+apply integration by parts, and then we also had to apply it <i>twice</i>.
+So in a sense, both of the solutions above are the same, just that the second
+one is some sort of an <i>unrolling</i> of the first nifty-looking solution.
+</p>
+    <p>Given this,
+    let us call the solutions presented above as <b>Solution 1</b>, and the current
+    one as <b>Solution 2</b>.
+</p>
+<p>
+    Suppose it did not strike us to make that second application of
+    integration by parts - what then?
+</p>
+<p>Okay, let's take stock. It does need to strike that we will have to
+apply integration by parts - <i>once</i>. But after that one application,
+we are stymied; we have arrived at this equality:
+    $$
+    I_1 = \int e^x (\sin x + \cos x)\, dx = e^x \sin x + c
+    $$
+    And (suppose) we do not realise that we have to apply
+    integration by parts a second time (in a manner described above).
+</p>
+<p>
+    When we are stymied, its always good to look back and fiddle around with
+    what we already have. In this case, let us try to present what we have
+    <i>more succinctly</i>. To this end, let us try to understand the
+    expression $(\sin x + \cos x)$. What we mean by "understanding" here
+    is that, we would like to see this expression expressed as a <i>single</i>
+    sine or cosine (instead of both of them appearing). In other words,
+    we would like to "simplify" the expression containing both a sine
+    and a cosine into one that just has a sine (or a cosine).
+</p>
+<p>
+    At this point, we need to think back on the trigonometric identities that we
+    know. Where does this happen? Oh yeah, precisely in the expansion of
+    $\sin (A + B)$ (or $\cos (A + B)$). Recall the identity:
+    $$
+    \sin (A + B) = \sin A \cos B + \sin B \cos A
+    $$
+    This is clearly an example where lots of sines and cosines on the RHS are
+    <i>summarized </i> into a single sine on the LHS.
+</p>
+<p>
+    With this background, we may now manipulate our expression as follows:
+    $$
+    (\sin x + \cos x) = \sqrt{2}\, \left(\frac{1}{\sqrt{2}}\sin x + \frac{1}{\sqrt{2}}\cos x\right) = \sqrt{2}\, \sin\left(x + \frac{\pi}{4}\right)
+    $$
+    So we may rewrite the identity for $I_1$ as:
+    $$
+    I_1 = \int e^x (\sin x + \cos x)\, dx = \sqrt{2}\, \int e^x \, \sin\left(x + \frac{\pi}{4}\right) \, dx = e^x \sin x + c
+    $$
+</p>
+<p>Let us extract out the essence of this last identity as follows:
+$$
+I_4 = \int e^x \, \sin\left(x + \frac{\pi}{4}\right) \, dx = \frac{1}{\sqrt{2}}\, e^x \sin x  + c
+    $$
+    (where we are being sloppy about the arbitrary constant $c$, the $c$ for $I_4$
+    is a scaling factor away from the $c$ for $I_1$.
+</p>
+<p>
+    Personally I find this identity for $I_4$ rather beautiful. What this means is that
+    (modulo the scaling factors $\frac{1}{\sqrt{2}}$), integrating the LHS leads to
+    a <i>phase change</i> by $\frac{\pi}{4}$.
+</p>
+<p>
+    And now we can get one more solution to our original problem! Stare hard at
+    the last identity for $I_4$. The integrand there is quite close to the integrand
+    we want: $e^x \sin x$. So we realise that we do
+    not need <i>integration by parts</i> any more, but instead <i>integration by
+substitution</i>! Let us proceed to substitute $t = (x + \frac{\pi}{4})$. In terms
+    of $t$, the identity above reads:
+    $$
+    I_4 = \int e^{\, t -\frac{\pi}{4}} \sin t \, dt = \frac{1}{\sqrt{2}} e^{\, t -\frac{\pi}{4}} \sin \left( t - \frac{\pi}{4} \right) + c
+    $$
+    and now cancel the $e^{-\frac{\pi}{4}}$ terms on either side, and we are done!
+</p>
+<h4>A third solution?</h4>
+<p>
+    Given all of the above, there is a third solution that involves
+    (a) neither integration by parts, nor (b) integration by substitution.
+    This post is already getting way too long, and I will
+    relegate the third
+    solution to another post. The reader is invited to taste the teaser in the
+    takeaways below.
+</p>
+
+
+<h4>Exercises for the reader</h4>
+Here are some other problems that may either be solved by following the
+techniques above or may be directly <i>reduced</i> to the problem above.
+I leave it to the reader to figure these out and outline the solution in the
+comments section below.
+<ol>
+    <li>Solve the indefinite integral $\int e^x (\sin x + 2\cos x) \, dx$.</li>
+    <li>Solve the indefinite integral $\int e^{2x}\sin x \, dx$.</li>
+    <li>How about $\int e^x \sin^2 x\, dx$? $\int e^x \sin^3 x \,dx$? In general,
+        we can solve for $\int e^x \, q(\sin x) \, dx$ where $q(\cdot)$ is an
+        arbitrary polynomial. To stretch this, we can in fact solve for
+    $\int p(e^x) \, q(\sin x) \, dx$ where $p$ and $q$ are <i>both</i> arbitrary
+    polynomials!</li>
+</ol>
+Hopefully the reader gets the idea as to the number of other indefinite integrals
+that now fall within reach.
+<h4>Takeaways</h4>
+<ul>
+    <li>
+        The main takeaway is that integration by parts is a powerful tool; if
+        one application does not get you the result, consider using it a second time!
+    </li>
+    <li>
+        Also, it may be useful to manipulate the expressions one already has
+        in order to get extra insight about the problem. This is what we did
+        in order to remove the extra application of integration by parts
+        (in the second solution).
+    </li>
+    <li>
+        I invite the reader to stare hard at the identity for $I_4$. Can
+        there be a physical interpretation of this identity (maybe wandering
+        into the area of Fourier series even)?
+    </li>
+    <li><i>The teaser:</i>I mentioned in the text above that there is another
+    direct solution that does not use integration by parts. It uses
+        <i><b>complex numbers</b></i>! This will be the subject of another post.</li>
+</ul>
+
+<br><br>
+<div>
+    <ul class="topics">
+        <li><a href="google.com">high school math</a></li>
+        <li><a href="google.com">olympiads</a></li>
+    </ul>
+</div>
+
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
+
+
+
+<!-- Sign and date the page, it's only polite! -->
+<address>Created 13 July 2017.<br>
+</address>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+</body>
+</html>

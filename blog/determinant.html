@@ -1,0 +1,468 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <link rel="stylesheet" href="../css/pygments.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/blogStyle.css">
+
+    <title>A Determinantal Identity</title>
+
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="../content/resume.2017.pdf">Resum&eacute;</a></li>
+                <li class="active"><a href="blog.html"><span class="glyphicon glyphicon-book"></span> Writings</a></li>
+                <li><a href="../reading.html"><span class="glyphicon glyphicon-duplicate"></span> Reading List</a></li>
+            </ul>
+
+            <script>
+//GOOGLE SEARCH
+//Enter domain of site to search.
+var domainroot="sambuddharoy.com"
+function Gsitesearch(curobj){ curobj.q.value="site:"+domainroot+" "+curobj.qfront.value }
+</script>
+            <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get"role="search" onSubmit="Gsitesearch(this)">
+                <div class="input-group"> <input name="q" type="hidden" />
+                    <input class="form-control" name="qfront" type="search" required class="searchField" placeholder="Search this site" maxlength="50"/>
+                    <span class="input-group-btn"> <button type="submit" class="search-button btn btn-primary"> <span class="glyphicon glyphicon-search"></span> </button> </span>
+                </div>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- Main content -->
+
+<h1>A Determinantal Identity.</h1>
+
+
+<div>
+    <ul class="topics">
+        <li><a href="blog.html">high school math</a></li>
+        <li><a href="blog.html">determinants</a></li>
+    </ul>
+</div>
+
+
+<p>
+
+<h3>TL;DR: </h3>
+<p>In this note, we discuss a determinantal identity and proceed to prove it. En route, we
+    also show that the square of a number of the
+    form $(a^3 + b^3 + c^3 - 3 a b c)$ is also of the same form.
+</p>
+
+<h3>Target Audience:</h3>
+High-school students, puzzle enthusiasts.
+
+<h3>Prerequisites:</h3>
+<ul>
+    <li>Some knowledge of determinants from linear algebra, and their properties.</li>
+    <li>Some knowledge of complex numbers, for instance the cube roots of unity.</li>
+</ul>
+
+<h3>Background:</h3>
+This problem of an identity in determinants appears as a problem in Hall & Knight's algebra
+textbook, Higher Algebra (problem 290,
+in the section on Miscellaneous Examples on page 522). The book indicates that this problem
+originally appeared in the mathematics exam at the Trinity College, Cambridge.<br><br>
+As a corollary of that, we are able to
+show that the square of a number of the form $(a^3 + b^3 + c^3 - 3 a b c)$ is also of the same form.
+
+<h3>Why:</h3>
+<ul>
+    <li> Demonstrates that complex numbers arise in all kinds of surprising applications.</li>
+</ul>
+
+<h3>The Story:</h3>
+For this problem, we will do the following:
+<ul>
+    <li>
+        State the original problem.
+    </li>
+    <li>
+        Try to formulate an approach for our problem, see why and if it fails. In the process we will break up
+        our original problem into multiple chunk-sized subproblems.
+    </li>
+    <li>
+        Backtrack a little and hopefully land on the correct approach.
+    </li>
+    <li>
+        As a corollary, prove the
+        statement about squares of numbers of the form $(a^3 + b^3 + c^3 - 3 a b c)$.
+    </li>
+    <li>
+        Parting messages, main takeaways.
+    </li>
+</ul>
+
+<h4>The original problem</h4>
+Let us state the original identity that appears in Hall & Knight:
+<p>
+    Show that<br>
+    $\mathrm{det}\begin{pmatrix}yz - x^2&zx - y^2&xy - z^2\\
+    zx - y^2&xy - z^2&yz - x^2\\xy - z^2&yz - x^2&zx - y^2\end{pmatrix} =
+    \mathrm{det}\begin{pmatrix}r^2&u^2&u^2\\u^2&r^2&u^2\\u^2&u^2&r^2\end{pmatrix}\tag{1}$<br> where
+    $r^2 = x^2 + y^2 + z^2$ and $u^2 = xy + yz + zx$.
+</p>
+
+<p>
+    Note that this can surely be proven by painstakingly expanding all the determinants
+    and multiplying all the products out; but that is not the solution we are aspiring for.
+
+    We are looking for a cleaner, methodical solution that will hopefully throw some insight
+    as to why such an identity is true.
+</p>
+<p>
+    The very first thing to appreciate upon seeing an identity of this sort is to appreciate the sheer symmetry. Such
+    mathematical beauty never fails to remind me of Blake's immortal lines in "The Tyger":<br><br>
+    <center>
+    <i>
+        Tyger Tyger, burning bright, <br>
+        In the forests of the night; <br>
+        What immortal hand or eye,<br>
+        Could frame thy fearful symmetry?
+    </i>
+</center><br><br>
+    Armed with this Tyger, let us proceed to tease apart the symmetry of the identity above.
+</p>
+<p>
+    In order to understand the symmetry, let us consider the matrix on the LHS of the identity.
+    Substituting variables $a = yz - x^2, b = zx - y^2, c = xy - z^2$, the matrix on the LHS
+    can be seen to be:
+<br><br>
+    $\mathrm{det}\begin{pmatrix}a&b&c\\b&c&a\\c&a&b\end{pmatrix}$.
+    <h4>Subproblem 1: Understand the LHS</h4>
+    In order to warm up on the problem, we will first show the following, that we call the
+    <h4>Basic Identity:</h4>
+    $\mathrm{det}\begin{pmatrix}a&b&c\\b&c&a\\c&a&b\end{pmatrix} = -(a^3 + b^3 + c^3 - 3 abc)$.
+</p>
+
+<p>
+   Let us take a moment to admire how pretty this factoid is.
+    The form on the RHS (<i>sans</i> the sign) i.e. $a^3 + b^3 + c^3 - 3 abc$ is quite common in mathematics
+    (inequalities etc.). For instance, the AM-GM inequality for 3 quantities is equivalent to
+    the statement that $a^3 + b^3 + c^3 - 3 abc \geqslant 0$ (for $a, b, c \geqslant 0$).
+</p>
+<p>
+    How do you prove this statement? Well - it is not too hard to compute the determinant
+    by (almost) brute-force. One may simplify the determinant (and here, use the familiar properties
+    of determinants, see a list <a href="http://linear.ups.edu/html/section-PDM.html">here</a>)
+    as follows. Replace the first column by the sum of all columns of the matrix (and
+    recall that this does not change the value of the determinant),
+    and then take the common $(a + b + c)$ factor out.
+</p>
+$\mathrm{det}\begin{pmatrix}a&b&c\\b&c&a\\c&a&b\end{pmatrix} =
+\mathrm{det}\begin{pmatrix}a + b  + c&b&c\\a + b + c&c&a\\a + b + c&a&b\end{pmatrix}
+= (a + b + c) \mathrm{det}\begin{pmatrix}1&b&c\\1&c&a\\1&a&b\end{pmatrix}$.
+<br><br>
+At this point, I leave it to the reader to complete the proof - noting also that
+$a^3 + b^3 + c^3 - 3 abc = (a + b + c)(a^2 + b^2 + c^2 - ab - bc - ca)$.
+<p>
+    So this gives us some "contextual" information about the LHS.
+</p>
+How about the RHS?
+<h4>Subproblem 2: Understand the RHS</h4>
+Here again, guided by considerations of symmetry, we will claim that:
+<br><br>
+$\mathrm{det}\begin{pmatrix}r^2&u^2&u^2\\u^2&r^2&u^2\\u^2&u^2&r^2\end{pmatrix} =
+{\mathrm{det}\begin{pmatrix}x&y&z\\z&x&y\\y&z&x\end{pmatrix}}^2$ where
+$r^2 = x^2 + y^2 + z^2$ and $u^2 = xy + yz + zx$.
+<p>
+  How did we <i>jump</i> to such a claim? Well in this regard, one has to be familiar
+    with the following property of determinants:
+    $\mathrm{det}(AB) =  \mathrm{det}(A)\mathrm{det}(B)$. Given that one knows this,
+    there will be a conscious effort to mould the determinant
+on the LHS into something simpler (in this case, the square of something simpler).
+</p>
+Now, we notice that with $A = B = \begin{pmatrix}x&y&z\\z&x&y\\y&z&x\end{pmatrix}$, we have that
+$AB = \begin{pmatrix}x^2 + y^2 + z^2&xy + yz + zx&zx + xy + yz\\zx + xy + yz &x^2 + y^2 + z^2&yz + zx + xy
+\\yz + zx + xy&zx + xy + yz &x^2 + y^2 + z^2\end{pmatrix}$.
+<br><br>
+Also note that
+${\mathrm{det}\begin{pmatrix}x&y&z\\z&x&y\\y&z&x\end{pmatrix}}^2$
+$={\mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix}}^2$. <br>
+<br>
+What happened here? The second and third <i>rows</i> in the matrix got swapped - while this caused a change in the
+sign of the determinant, since there is a <i>square</i> on top, the squares of the two determinants are still the same.
+
+<h4>Summarize so far:</h4>
+Having simplified the LHS and the RHS, let us take stock of what the problem wants us to prove. We have now transformed
+(1) so we now need to show that:<br>
+$\mathrm{det}\begin{pmatrix}a&b&c\\b&c&a\\c&a&b\end{pmatrix} =
+{\mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix}}^2 \tag{1'}$,<br>
+where $a = yz - x^2, b = zx - y^2, c = xy - z^2$.
+
+<h4>Subproblem 3: Pulling the LHS and RHS closer to each other</h4>
+Now that we have a good handle on both the RHS as well as the LHS, the task of pulling them closer to each other
+appears less daunting.
+<p>
+    In fact, the proof in Subproblem 2 gives us the following
+<h4> Approach (that does not work):</h4>
+<b>What we want:</b><br>
+We would ideally like to
+manipulate the
+    matrices $\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix}$ being multiplied so that the
+    determinant does not change, and the product of the two matrices result in
+    what we want, i.e. the matrix $\begin{pmatrix}yz - x^2&zx - y^2&xy - z^2\\
+    zx - y^2&xy - z^2&yz - x^2\\xy - z^2&yz - x^2&zx - y^2\end{pmatrix}$?
+    <br><br>
+    <b>Why it might work</b>:<br> After all, such a product (see Subproblem 2 above)
+    did give us $\begin{pmatrix}x^2 + y^2 + z^2&xy + yz + zx&zx + xy + yz\\zx + xy + yz &x^2 + y^2 + z^2&yz + zx + xy
+    \\yz + zx + xy&zx + xy + yz &x^2 + y^2 + z^2\end{pmatrix}$, right?
+</p>
+The main crux is how to get the negative signs, that too at the appropriate terms. Here's an example
+manipulation.
+<p>
+    Note that going from the matrix $\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix}$ to the matrix
+    $\begin{pmatrix}x&y&z\\z&x&y\\y&z&x\end{pmatrix}$ changes the sign of the determinant - this is
+    because the $2^{nd}$ and the $3^{rd}$ <b>rows</b> have been swapped. We can restore the sign of the
+    determinant by negating the second row:
+    <br><br>
+    $\mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix} = \mathrm{det}\begin{pmatrix}x&y&z\\-z&-x&-y\\y&z&x\end{pmatrix}$
+</p>
+<p> Taking $ A = \begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix}$ and
+    $B = \begin{pmatrix}x&y&z\\-z&-x&-y\\y&z&x\end{pmatrix}$
+we see that $AB = \begin{pmatrix}
+    x^2&z^2&2xz- y^2\\
+    2xy - z^2&y^2&x^2\\
+    y^2&2yz-x^2&z^2\end{pmatrix}$
+</p>
+<p>
+This appears somewhat promising, enough for us to try many different substitutions and tricks using the
+determinants. At times in this pursuit, it felt like we were really close to the actual form desired.
+    However,
+despite numerous methodical efforts, I was unable to prove the identity via this approach.
+<br><br>
+    <i><b>If someone succeeds using this approach, I would very much like to know in the comments below.</b></i>
+    <br><br>
+    For now, it was time to rethink our strategy.
+</p>
+
+<h4>Strategy Overhaul</h4>
+Since most of the current problem deals with the properties of the interesting
+matricial form $\begin{pmatrix}a&b&c\\b&c&a\\c&a&b\end{pmatrix}$,
+let us take another look at the <b>Basic Identity</b> (restated in terms of $x, y, z$ in place of
+$a, b, c$): <br>
+$\mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix} = -(x^3 + y^3 + z^3 - 3 xyz)
+= (-x)^3 + (-y)^3 + (-z)^3 - 3(-x)(-y)(-z)$.
+
+<br><br>
+and fiddle around with other proofs for this. We are backtracking, but this is not a deterministic process
+in mathematics - there is always an element of luck
+in backtracking in the <i>right</i> area.
+<p> This is where <i><b>complex numbers</b></i> enter the stage! We will view this determinant
+    as a <i>function</i> of the three variables $x, y$ and $z$; in fact this is a <i>polynomial</i>
+    function (of the $3^{rd}$ degree). So if we are able to find $3$ <i>distinct</i> factors of
+    this determinantal polynomial, we would be done: the product of the three factors would
+    equal (modulo the sign) the determinant!
+</p>
+<p>
+Well, we already know one factor of the polynomial i.e. $(x + y + z)$; see the proof above (with the
+    necessary mapping of variables $a, b, c \rightarrow x, y, z$).
+    Now, let $\omega$ be the <i>cube root of unity</i>, so that all the cube roots of $1$
+    are $1, \omega, \omega^2$ (where $1$ is the only real root, while $\omega, \omega^2$ are the
+    <b><i>complex</i></b> roots of unity). Recall some properties of these cube roots:
+    <ul>
+    <li>$\omega^3 = 1$</li>
+    <li>$1 + \omega + \omega^2 = 0$.</li>
+</ul>
+</p>
+
+Another way to prove the <b>Basic Identity</b> is to prove that<br>
+$\mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix} = -(x + y + z) (x + y\omega + z\omega^2)
+(x + y\omega^2 + z\omega) \tag{2}$<br> and recall that <br>
+$x^3 + y^3 + z^3 - 3 xyz = (x + y + z) (x + y\omega + z\omega^2)
+(x + y\omega^2 + z\omega) \tag{3}.$
+<br><br>Compiling the results, we have:
+
+$(x + y + z) (x + y\omega + z\omega^2)
+(x + y\omega^2 + z\omega)  = - \mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix} =
+\mathrm{det}\begin{pmatrix}-x&-y&-z\\-y&-z&-x\\-z&-x&-y\end{pmatrix} \tag{4}$.
+
+<br><br>
+I invite the reader to attempt proving (2) above; the proof involves some cute manipulation
+of determinants. For completeness the proof is attached below.
+
+<button class="accordion">Proof of (2)</button>
+<div class="panel">
+    <p>
+        Note that the determinant in (2) has $(x + y + z)$ as a factor, as we saw earlier.
+        So proving (2) boils down to proving that the other two expressions on the RHS
+        are also <i>factors</i> of the LHS.
+        Thus, for instance, we want to prove that
+the <i>complex</i> expression
+$(x + y\omega + z\omega^2)$ is also a factor of the above determinantal polynomial. To do this, multiply the
+second <b><i>column</i></b> of the matrix by $\omega$, the third column by $\omega^2$ and (to balance it out) divide by
+$\omega \times \omega^2 = \omega^3 = 1$. We get:
+<br><br>
+$
+\mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix} = \mathrm{det}\begin{pmatrix}x&y\omega&z\omega^2\\y&z\omega&x\omega^2\\z&x\omega&y\omega^2\end{pmatrix}$.
+<br><br>
+Again, using $\omega^3 = 1$ in the RHS above, and now multiplying the second <b><i>row</i></b> by $\omega$
+and the third row by $\omega^2$, we see
+$\mathrm{det}\begin{pmatrix}x&y\omega&z\omega^2\\y&z\omega&x\omega^2\\z&x\omega&y\omega^2\end{pmatrix} =
+\mathrm{det}\begin{pmatrix}x&y\omega&z\omega^2\\y\omega&z\omega^2&x\\z\omega^2&x&y\omega\end{pmatrix}$.
+<br><br>
+    Now sum up the columns to see that $(x + y\omega + z\omega^2)$ is <i>also</i> a factor of the polynomial.
+    Analogously, we may also see that $(x + y\omega^2 + z\omega)$ is also a factor. Also, it is easy to check that
+    these factors are all <i>distinct</i>. We can thereby conclude that the <i>product</i> of all three of these
+    factors must divide the determinant. Now, checking the signs of $x^3$ on both sides (or set $y = z = 0, x = 1$,
+        and evaluate the expressions on both sides), we arrive at the
+    conclusion that:
+    <br><br>
+    $
+    \mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix} = -(x + y + z) (x + y\omega + z\omega^2)
+    (x + y\omega^2 + z\omega)$.
+</p>
+</div>
+
+<h4>The Final Solution</h4>
+Although it may not feel like it, we are really close to our final solution armed with these identities (2)-(4).
+From identity (2), we can claim that
+$
+{\mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix}}^2 =
+{(x + y + z)}^2 {(x+ y\omega + z\omega^2)}^2
+{(x + y\omega^2 + z\omega)}^2$.
+<p>
+    Now stagger the terms of the RHS above as follows:
+    $[(x + y + z)(x + y\omega + z\omega^2)][(x + y\omega + z\omega^2)(x + y\omega^2 + z\omega)]
+    [(x + y\omega^2 + z\omega)(x + y + z)]$.
+</p>
+Consider the first square bracket: $[(x + y + z)(x + y\omega + z\omega^2)]$. Expanding this out and
+simplifying using that $(1 + \omega + \omega^2) = 0$, we get <br><br>
+$(x + y + z)(x + y\omega + z\omega^2)$
+$= (x^2 + y^2\omega + z^2\omega^2) + xy(1 + \omega)
++xz(1 + \omega^2) + yz(\omega + \omega^2) $<br>
+$=
+(x^2 + y^2\omega + z^2\omega^2) - xy \omega^2 - xz\omega - yz$<br>
+$= (x^2 - yz) + (y^2 - zx)\omega + (z^2 - xy)\omega^2
+$.<br><br>
+Now the pattern is clear: the reader is invited to check the other two square brackets to see that
+the products yield the results as indicated below.
+<p>
+Thus we have that
+$
+{\mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix}}^2  $<br>
+$= [(x^2 - yz) + (y^2 - zx)\omega + (z^2 - xy)\omega^2][(x^2 - yz) + (y^2 - zx)\omega^2 + (z^2 - xy)\omega]
+[(x^2 - yz) + (y^2 - zx) + (z^2 - xy)]$<br><br>
+    <i>Using identity (4) above</i> <br><br>
+$=\mathrm{det}\begin{pmatrix}yz - x^2&zx - y^2&xy - z^2\\
+zx - y^2&xy - z^2&yz - x^2\\xy - z^2&yz - x^2&zx - y^2\end{pmatrix}$<br>
+    thereby proving (1) or (1'). <br><br>
+    <b>QED.</b>
+</p>
+
+<h4>Corollary:</h4>
+The identity
+$ {\mathrm{det}\begin{pmatrix}x&y&z\\y&z&x\\z&x&y\end{pmatrix}}^2 = \mathrm{det}\begin{pmatrix}yz - x^2&zx - y^2&xy - z^2\\
+zx - y^2&xy - z^2&yz - x^2\\xy - z^2&yz - x^2&zx - y^2\end{pmatrix}$
+
+yields that
+${(x^3 + y^3 + z^3 - 3 xyz)}^2 = (\alpha^3 + \beta^3 + \gamma^3 - 3\alpha\beta\gamma)$
+where $\alpha = x^2 - yz, \beta = y^2 - zx, \gamma = z^2 - xy$.
+
+<p>
+    Thus, the <i>square</i> of a number of the form $x^3 + y^3 + z^3 - 3 xyz$ is also of the same form!
+</p>
+
+<h4>Takeaways</h4>
+<ul>
+    <li>
+        When dealing with a problem that has inherent symmetry, it is preferable to exploit that symmetry.
+        Exploitation of such symmetry may at times lead us afar into a surprising domain (in this situation,
+        complex numbers).
+        <br><br>
+        What we mean by this is the following:
+        $x^3 + y^3 + z^3 - 3xyz = (x + y + z)(x^2 + y^2 + z^2 - xy - yz - zx)$ can be viewed in its <i>arguably more</i>
+        symmetric form:
+        $x^3 + y^3 + z^3 - 3xyz = (x + y + z)(x + y\omega + z\omega^2)(x + y\omega^2 + z\omega)$ and this latter
+        form is what helped us obtain the solution.
+    </li>
+    <li>
+        <i>Generalize!</i> It feels like the problem above is a special case of some problem for general integers $n$,
+        while here $n = 3$ ($3^{rd}$ roots of unity, etc.). How about other $n$? What is the specific form that we should
+        be considering?
+    </li>
+</ul>
+
+
+<div>
+    <ul class="topics">
+        <li><a href="google.com">high school math</a></li>
+        <li><a href="google.com">determinants</a></li>
+    </ul>
+</div>
+
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
+
+
+
+<!-- Sign and date the page, it's only polite! -->
+<address>Created 23 March 2017.<br>
+</address>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <link rel="stylesheet" href="../css/pygments.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/blogStyle.css">
+    <link rel="stylesheet" href="../css/simpson.css">
+
+    <title>Code-walkthrough: An excursion in JavaScript</title>
+
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="../content/resume.2017.pdf">Resum&eacute;</a></li>
+                <li class="active"><a href="blog.html"><span class="glyphicon glyphicon-book"></span> Writings</a></li>
+                <li><a href="../reading.html"><span class="glyphicon glyphicon-duplicate"></span> Reading List</a></li>
+            </ul>
+
+            <script>
+//GOOGLE SEARCH
+//Enter domain of site to search.
+var domainroot="sambuddharoy.com"
+function Gsitesearch(curobj){ curobj.q.value="site:"+domainroot+" "+curobj.qfront.value }
+</script>
+            <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get"role="search" onSubmit="Gsitesearch(this)">
+                <div class="input-group"> <input name="q" type="hidden" />
+                    <input class="form-control" name="qfront" type="search" required class="searchField" placeholder="Search this site" maxlength="50"/>
+                    <span class="input-group-btn"> <button type="submit" class="search-button btn btn-primary"> <span class="glyphicon glyphicon-search"></span> </button> </span>
+                </div>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<!-- Main content -->
+
+<h1>Code-walkthrough: An excursion in JavaScript.</h1>
+
+<div>
+    <ul class="topics">
+        <li><a href="blog.html">programming</a></li>
+    </ul>
+</div>
+
+<p>
+
+<h3>TL;DR: </h3>
+We go through and dissect some JavaScript code for a popular game on FaceBook.
+
+<h3>Target Audience:</h3>
+Programming enthusiasts.
+
+</p>
+
+<h4>Overall Structure of app.js</h4>
+The overall structure looks like this:
+var a, b;<br>
+initialize a, initialize b;<br>
+var d, main, startGame, setScore, h, getTime, handleTap, results; <br>
+call main(); <br>
+
+<h3>What:</h3>
+<p>
+    Many of us might have seen the principle at work without being aware that this has a name.
+    The essential idea is to count objects in different ways, to yield surprising results.
+</p>
+<p>
+    The <a href="https://en.wikipedia.org/wiki/Fubini%27s_theorem">principle of Fubini</a> referred to
+    in this post, corresponds to double integrations where
+    the order of integrating over $x$ or over $y$ does not matter. There are certain
+    conditions under which such integrations can be conducted; however that is not the
+    focus of this short note. (The interested reader may check out the
+    <a href="https://en.wikipedia.org/wiki/Fubini%27s_theorem">wiki</a> page for details
+    as to when we can perform the double integration in this manner).
+</p>
+<p>
+    In this short note, we illustrate Fubini's principle in combinatorics and counting.
+</p>
+
+<h3>How:</h3>
+This is how we will proceed wrt this topic.
+<ul>
+    <li>We will describe the basic idea behind this counting technique.</li>
+    <li>We will demonstrate the use of this via some examples.</li>
+    <li>The <b>icing</b>: we will show how one can create new problems from old, by
+        tweaking the various assumptions involved.</li>
+</ul>
+
+<h3>About the technique.</h3>
+<p>
+    The basic idea behind the method is simplicity itself. The technique deals with
+    different ways of counting some combinatorial entities/objects; since we are
+    essentially counting the same collection of objects, the counts should be the same.
+</p>
+<p>
+    Here is a short summary of the technique: suppose you have a $2\mathbf{D}$ matrix of
+    $0$s and $1$s, then counting the $1$'s by the rows or counting the $1$'s along
+    the columns should yield the same sum: the total number of $1$'s in the matrix!
+    <br><br>
+    Here, the "combinatorial object" that we are counting are the $1$'s in the matrix.
+    The two ways of counting (via rows, or via columns) is tantamount to two "views" on the
+    same table/matrix.
+</p>
+<p>
+    While this may sound rather trivial, it is amazing how such a simple idea can have
+    really far-reaching consequences. But this is quite common in Mathematics in general,
+    a rather simple <i>kernel</i> of an idea can have numerous ramifications.
+</p>
+
+<h3>Examples:</h3>
+As promised, we are going to demonstrate the effectiveness of this technique via
+examples.
+<br>
+<br>
+The first example appeared as
+<a href="https://www.imo-official.org/problems.aspx">
+    Problem 2
+    </a>
+(on Day 1) in the 1998
+<a href="https://www.imo-official.org/year_info.aspx?year=1998">
+    International Mathematics Olympiad.
+</a>
+<h4>Example 1:</h4>
+In a contest, there are $m$ candidates and $n$ judges, where $n \geqslant 3$ is an odd integer.
+Each candidate is evaluated by each judge as either pass or fail.
+Suppose that each pair of judges agrees on at most $k$ candidates.
+Prove that
+$$
+\frac{k}{m} \geqslant \frac{n-1}{2n}
+$$
+
+<h4>First Thoughts:</h4>
+<ol>
+    <li>
+        The <i>interactions</i> indicated in the problem are primarily between candidates and judges.
+        Thus if we were to model the candidates and judges are vertices in a graph, this would
+        correspond to a <i>bipartite</i> graph.
+    </li>
+    <li>
+        At the outset, it is always a good idea to start fixing some notation/indexing.
+        <ul>
+            <li>We will label the Judges by the letter $J$ and the candidates by $C$.</li>
+            <li>
+                Typical indexing considerations go as follows: since the word
+                judge starts with the letter j, while we would like to denote the judges as
+                $J_{\star}$, it would be preferable not to index them by $j$ itself (imagine
+                how $J_j$ would sound/look!).
+            </li>
+            <li>However, while $J_k$ sounds nice, we cannot use $k$ for indexing, since
+                $k$ already means something in this problem! So running through the alphabet,
+                let's choose another letter to index the judges. For this post, our choice
+                is $r$. So the judges are $J_1, J_2, \cdots, J_r, \cdots, J_n$. For fun, we can use
+                <a href="https://en.wikipedia.org/wiki/List_of_fictional_judges">this list</a>
+                of judges for names.
+            </li>
+            <li>For the candidates, we are free to use $i$, so $C_1, \cdots, C_i, \cdots, C_m$ are the
+                candidates.
+            </li>
+        </ul>
+    </li>
+    <li>
+        &Agrave; priori, it is not clear why we have the restriction that $n$ is an <i>odd</i>
+        integer. However, let us call this out here, so that this is a question that the
+        reader carries in mind, throughout the following to see whether we need this extra
+        condition at all. We should also note that there are <i>at least</i> two places where
+        the number $2$ figures prominently in this problem - one is in the parity of $n$ (that
+        $n$ is <i>odd</i>) and also in the fraction $\frac{n-1}{2n}$ (which is really close to
+        $\frac{1}{2}$). In fact there is one more implicit way in which the number $2$ figures
+        in this problem: can the reader figure out where?
+    </li>
+    <li>Some basic sanity checks.
+        Note the wording of the problem: every pair of judges
+        agrees on <i>at most</i> $k$ candidates. So for a specific scenario if a number $k_0$
+        satisfies this restriction, so also does $k_0 + 1$. Thus, the <i>direction</i> of the
+        inequality $\frac{k}{m} \geqslant \frac{n-1}{2n}$ is correct. If $k=k_0$ satisfies
+        this inequality so also does $k_0 + 1$. This may seem almost facetious right now -
+        having realised the above flavor of the problem, we may rephrase the problem as considering the following quantity:
+        $$\min_{\text{all scenarios}} \max_{\text{judge pairs}} (\text{agreements over candidates})$$
+        Thus we recognize the problem as a <a href="https://en.wikipedia.org/wiki/Minimax">minimax
+            problem!</a>
+    </li>
+</ol>
+
+<h4>Start off:</h4>
+<p>
+    Armed with the above, we turn our minds to modeling the problem. Clearly since there is no
+    <i>direct</i> interaction between judges (or between candidates), we may model this
+    as a <i>bipartite</i> graph. And of course, there is no better way to represent
+    (the edges of ) a bipartite graph by its <b>bipartite adjacency matrix</b>, where we have
+    (say) rows corresponding to the candidates and the columns corresponding to the judges.
+    Here is an illustration for $n = 3$ judges and $m = 2$ candidates. Call this matrix
+    $\mathbf{M}$.
+</p>
+
+<div class="wrapper2">
+    <div class="box" style="opacity:0;"></div>
+    <div class="box column-header">$J_1$</div>
+    <div class="box column-header">$J_2$</div>
+    <div class="box column-header">$J_3$</div>
+    <div class="box row-header">$C_1$</div>
+    <div class="box entry">P</div>
+    <div class="box entry">F</div>
+    <div class="box entry">P</div>
+    <div class="box row-header">$C_2$</div>
+    <div class="box entry">F</div>
+    <div class="box entry">P</div>
+    <div class="box entry">P</div>
+</div>
+
+<p>
+    Given this specific setting, we may check that the right $k$ for this matrix is
+    $k = 1$ (any pair of judges agree on at most $1$ candidate). Also note that the
+    inequality in the problem does hold: $1/2 \geqslant 2/6$ ($k = 1$, $m = 2$, $n = 3$).
+</p>
+
+<h4>Transform:</h4>
+<p>
+    While the input is essentially the matrix above, we should rather be looking at the matrix
+    that directly ties up with the minimax statement that we formulated. Look at the minimax
+    statement again: it considers <i>judge pairs</i> instead of judges. This indicates that
+    while the matrix representation above considers
+    (candidate, judge) tuples, we should instead consider <i>tuples</i> of (candidate, judge pairs).
+</p>
+<p>
+    How do we go from the matrix $\mathbf{M}$ above to this latter matrix? Also what should the
+    <i>entries</i> of the transformed matrix be? Well, given a candidate and
+    a pair of judges, the entry should be just "Agree" (A in short) or "Disagree" (D in short).
+    Let us demonstrate
+    the transformed matrix $\mathbf{T}$ corresponding to the above:
+</p>
+<div class="wrapper2">
+    <div class="box" style="opacity:0;"></div>
+    <div class="box column-header">$(J_1, J_2)$</div>
+    <div class="box column-header">$(J_1, J_3)$</div>
+    <div class="box column-header">$(J_2, J_3)$</div>
+    <div class="box row-header">$C_1$</div>
+    <div class="box entry">D</div>
+    <div class="box entry">A</div>
+    <div class="box entry">D</div>
+    <div class="box row-header">$C_2$</div>
+    <div class="box entry">D</div>
+    <div class="box entry">D</div>
+    <div class="box entry">A</div>
+</div>
+<p>
+    Note that if the original matrix had $n$ columns corresponding to the judges, this
+    new matrix $\mathbf{T}$ has $n\choose 2$ columns corresponding to <i>judge pairs</i>. The problem
+    statement - in terms of this new matrix - translates to: <b>every column has
+    at most $k$ A's</b>.
+</p>
+
+<h4>Enter Fubini</h4>
+<p>Now the stage is set to make progress. We will think Fubini with the matrix $\mathbf{T}$.
+    We have some handle of the counts (of A's) as per the columns - how about the rows?
+</p>
+<p>
+    Consider candidate row $C_i$. This candidate gets evaluated by all the $n$ judges
+    and gets $P$ or $F$ from each of them - let's give numbers here - suppose $C_i$
+    gets $x_i$ $P$'s and $(n - x_i)$ $F$'s (we are keeping a subscript $i$ on the $x$
+    here since this is happening for the candidate $C_i$). How many $A$'s and $D$'s
+    does $C_i$ get in its row in the transformed matrix?
+</p>
+<p>
+    Well this is easy to calculate. Every pair of $P$'s in $\mathbf{M}$
+    gives rise to an $A$ in $\mathbf{T}$, <i>as also</i>
+    every pair of $F$'s. Thus the total number of $A$'s in $C_i$'s row in
+    $\mathbf{T}$ is ${x_i \choose 2} +{{n-x_i} \choose 2}$.
+</p>
+<p>
+    Thus the number of $A$'s in the matrix $\mathbf{T}$ (summing over all
+    <i>rows</i>) is:
+    $$
+    \sum_{i=1}^{i=m} {x_i \choose 2} + {{n-x_i} \choose 2}
+    $$
+</p>
+<p>The number of $A$'s (summing over all columns now) is:
+    $$
+    \leqslant {n \choose 2}\times k
+    $$
+</p>
+<p>
+    Finally, matching up, we get:
+    $$
+    \sum_{i=1}^{i=m} {x_i \choose 2} + {{n-x_i} \choose 2} \leqslant {n \choose 2} k
+    $$
+</p>
+
+<h4>D&eacute;nouement</h4>
+<p>
+    Now this is just calculation, but before that happens we need to figure out the
+    final step - how do we take care of the $x_i$'s appearing in this last inequality?
+</p>
+<p>
+    Here is where the $\min_{\text{all scenarios}}$ comes into play: we need this
+    inequality to be true not just for a <i>specific</i> matrix $\mathbf{T}$ but for
+    <b>all such</b> matrices.
+</p>
+<p>
+    So we will have to consider the <i>maximum</i> that the quantity
+    ${x_i \choose 2} + {{n-x_i} \choose 2}$ can take (where $x_i$ has to
+    be an <i>integer</i>). Also, notice that
+    this final step is the <b>only place</b> where we are invoking that
+    $n$ is <i>odd</i>!
+</p>
+<p>
+    This maximum (over choices of $x_i$) is easily derived since the
+    expression ${x_i \choose 2} + {{n-x_i} \choose 2}$ is essentially a
+    <i>quadratic</i>. (The reader is invited to check the following Fact
+    by oneself, or to click-expand below).
+</p>
+
+<!--
+<button class="accordion">Proof of (2)</button>
+-->
+<button class="accordion">
+    Fact: $\max \{{x_i \choose 2} + {{n-x_i} \choose 2}\} \leqslant \frac{n^2 -1}{4}$ for $n$ odd
+</button>
+
+<div class="panel">
+    <p>
+Let $n = 2t + 1$ (since $n$ is odd).
+
+        The expression ${x_i \choose 2} + {{n-x_i} \choose 2}$ simplifies as
+        $\frac{x_i^2 + (n-x_i)^2 - n}{2}$. We can forget about constants for the
+        purpose of this calculation (such as $n$, $2$), so we are essentially
+        <i>maximizing</i> $x_i^2 + (n-x_i)^2$.
+</p>
+    <p>
+        Now this is easy. By differentiation or appealing to AM-GM, we can see that
+        this maximum is achieved when $x_i$ is (roughly) half of $n$. However, since
+        $n$ is odd and $x_i$ has to be an integer, it cannot happen that $x_i$ is
+        <i>exactly</i> half of $n$. So the roughly translates to $n = 2t + 1$,
+        $x_i = t$ (or $t+1$).
+    </p>
+    <p>Calculating the expression for $x_i = t = (n-1)/2$ gives the result.</p>
+</div>
+
+Finally, we have the overall inequality:
+$$
+m \frac{n^2 - 1}{4} \leqslant k {n \choose 2}
+$$
+which yields the desired inequality: $k/m \geqslant (n-1)/2n$.
+
+<h4>Takeaways</h4>
+<ul>
+    <li>
+        Can the reader see where $2$ entered the problem? The answer: because there are <b>two</b>
+        categories in which the entries of the original matrix $\mathbf{M}$
+        are classified (Pass or Fail). I invite the reader to
+        <i>construct</i> his/her own problem for when there are <b>three</b> possibilities
+        instead of $2$ (say, each Judge labels each Candidate one of {Good, Moderate, Bad}).
+    </li>
+    <li>
+        For <i>even</i> $n$: the reader is invited to check that in this case, the
+        resulting inequality is
+        $$
+        \frac{k}{m} \geqslant \frac{n-2}{2(n-1)}
+        $$
+        i.e. the <i>same</i> as for the case of the <i>odd</i> number $(n-1)$. This was surprising
+        to me - would appreciate comments as to why this happened!
+    </li>
+    <li>
+        We note that this problem has a <i>minimax</i> objective. What if we were to
+        consider other objectives - such as the <i>average number of agreements</i>
+        over judge pairs?
+    </li>
+</ul>
+
+<h4>Example 2:</h4>
+To be added on later.
+
+<br><br>
+<div>
+    <ul class="topics">
+        <li><a href="google.com">high school math</a></li>
+        <li><a href="google.com">olympiads</a></li>
+    </ul>
+</div>
+
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
+
+
+
+<!-- Sign and date the page, it's only polite! -->
+<address>Created 19 June 2017.<br>
+</address>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+</body>
+</html>

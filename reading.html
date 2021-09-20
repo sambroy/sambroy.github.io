@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <title>My homepage</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/myStyle.css">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="content/resume.2017.pdf">Resum&eacute;</a></li>
+                <li><a href="blog/blog.html"><span class="glyphicon glyphicon-book"></span> Writings</a></li>
+                <li class="active"><a href="reading.html"><span class="glyphicon glyphicon-duplicate"></span> Reading List</a></li>
+            </ul>
+
+            <script>
+//GOOGLE SEARCH
+//Enter domain of site to search.
+var domainroot="sambuddharoy.com"
+function Gsitesearch(curobj){ curobj.q.value="site:"+domainroot+" "+curobj.qfront.value }
+</script>
+            <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get"role="search" onSubmit="Gsitesearch(this)">
+                <div class="input-group"> <input name="q" type="hidden" />
+                    <input class="form-control" name="qfront" type="search" required class="searchField" placeholder="Search this site" maxlength="50"/>
+                    <span class="input-group-btn"> <button type="submit" class="search-button btn btn-primary"> <span class="glyphicon glyphicon-search"></span> </button> </span>
+                </div>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container-fluid">
+
+    <!-- Main content -->
+    <h1 class="text-center">My Reading List</h1>
+
+<!--
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+-->
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+    <div class="container">
+        <h2>Technical</h2>
+        <form role="form">
+            <div class="row">
+                <div class="col-md-6">
+                    <fieldset>
+                        <legend>
+                            Deep Learning
+                        </legend>
+                        <div class="checkbox">
+                            <input id="checkbox1" type="checkbox" checked="" disabled="">
+                            <label for="checkbox1">
+                                <a href="https://arxiv.org/pdf/1506.03134.pdf">Pointer Networks</a>, by Vinyals et al.
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <input id="dl-checkbox2" type="checkbox" disabled="">
+                            <label for="dl-checkbox2">
+                                <a href="https://www.usenix.org/system/files/conference/osdi16/osdi16-abadi.pdf">TensorFlow: A System for Large-Scale
+                                    Machine Learning</a>, by Abadi et al.
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <input id="dl-checkbox3" type="checkbox" checked="" disabled="">
+                            <label for="dl-checkbox3">
+                                <a href="https://arxiv.org/pdf/1706.03762.pdf">Attention Is All You Need</a>, by Vaswani et al.
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-md-6">
+                    <fieldset>
+                        <legend>
+                            Optimization
+                        </legend>
+                        <div class="checkbox">
+                            <input id="checkbox9" type="checkbox" disabled="">
+                            <label for="checkbox9">
+                                <a href="http://www.aclweb.org/anthology/P13-1101">Subtree Extractive Summarization via Submodular Maximization</a>, by Morita et al.
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <input id="checkbox9" type="checkbox" disabled="">
+                            <label for="checkbox9">
+                                <a href="https://arxiv.org/pdf/1706.06569.pdf">A Unified Approach to Adaptive Regularization
+                                    in Online and Stochastic Optimization</a>, by Gupta et al.
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-md-6">
+                    <fieldset>
+                        <legend>
+                            Books that I am currently reading:
+                        </legend>
+                        <div class="checkbox">
+                            <input id="checkbox1" type="checkbox" checked="" disabled="">
+                            <label for="checkbox1">
+                                <a href="https://www.amazon.com/Probabilistic-Method-Noga-Alon/dp/0470170204">Probabilistic Method</a>, by Alon and Spencer.
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <input id="dl-checkbox2" type="checkbox" disabled="">
+                            <label for="dl-checkbox2">
+                                <a href="http://bookstore.ams.org/mmono-170/">Elliptic Functions and Elliptic Integrals
+                                    </a>, by Prasolov and Solovyev.
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <input id="dl-checkbox2" type="checkbox" checked="" disabled="">
+                            <label for="dl-checkbox2">
+                                <a href="https://www.amazon.com/Introduction-Probability-Theory-Paul-Hoel/dp/039504636X">Probability Theory,
+                                </a>by Hoel, Port and Stone.
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <input id="dl-checkbox2" type="checkbox" disabled="">
+                            <label for="dl-checkbox2">
+                                <a href="https://www.amazon.com/Introduction-Stochastic-Processes-Paul-Gerhard/dp/0881332674/ref=sr_1_1?s=books&ie=UTF8&qid=1508844494&sr=1-1&keywords=hoel+port+stone+stochastic+processes">Stochastic Processes,
+                                </a> by Hoel, Port and Stone.
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <input id="dl-checkbox2" type="checkbox" disabled="">
+                            <label for="dl-checkbox2">
+                                <a href="https://www.amazon.com/Introduction-Statistical-Theory-Houghton-Mifflin-Statistics/dp/0395046378/ref=sr_1_1?s=books&ie=UTF8&qid=1508844584&sr=1-1&keywords=hoel+port+stone+statistical+theory">Statistical Theory,
+                                </a> by Hoel, Port and Stone.
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+
+            </div>
+        </form>
+
+<h2>Non-technical.</h2>
+        <form role="form">
+            <div class="row">
+                <div class="col-md-6">
+                    <fieldset>
+                        <legend>
+                            Fiction.
+                        </legend>
+                        <div class="checkbox">
+                            <input id="checkbox1" type="checkbox" disabled="">
+                            <label for="checkbox1">
+                                <a href="http://hitchhikers.wikia.com/wiki/So_Long,_and_Thanks_for_All_the_Fish">So long, and thanks for all the fish</a><a href="https://www.amazon.com/Long-Thanks-Hitchhikers-Guide-Galaxy/dp/0345391837">, by Douglas Adams.</a>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <input id="f-checkbox2" type="checkbox" disabled="">
+                            <label for="f-checkbox2">
+                                <a href="https://www.amazon.com/Red-Pony-John-Steinbeck/dp/9994464655">The Red Pony</a>, by John Steinbeck.
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-md-6">
+                    <fieldset>
+                        <legend>
+                            Non-fiction.
+                        </legend>
+                        <div class="checkbox">
+                            <input id="checkbox9" type="checkbox" disabled="">
+                            <label for="checkbox9">
+                                <a href="http://www.amazon.in/Gene-Intimate-History-Siddhartha-Mukherjee/dp/1476733503">The Gene: an intimate history</a> by Siddharth Mukherjee.
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </form>
+    </div>
+
+<br><br>
+    <!-- Sign and date the page, it's only polite! -->
+    <address>Last updated 24 October 2017.<br>
+    </address>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.url = sambuddharoy.com/reading.html;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+</body>
+
+</html>
+

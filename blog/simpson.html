@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <link rel="stylesheet" href="../css/pygments.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/blogStyle.css">
+    <link rel="stylesheet" href="../css/simpson.css">
+
+    <title>On Simpson's Paradox</title>
+
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="../content/resume.2017.pdf">Resum&eacute;</a></li>
+                <li class="active"><a href="blog.html"><span class="glyphicon glyphicon-book"></span> Writings</a></li>
+                <li><a href="../reading.html"><span class="glyphicon glyphicon-duplicate"></span> Reading List</a></li>
+            </ul>
+
+            <script>
+//GOOGLE SEARCH
+//Enter domain of site to search.
+var domainroot="sambuddharoy.com"
+function Gsitesearch(curobj){ curobj.q.value="site:"+domainroot+" "+curobj.qfront.value }
+</script>
+            <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get"role="search" onSubmit="Gsitesearch(this)">
+                <div class="input-group"> <input name="q" type="hidden" />
+                    <input class="form-control" name="qfront" type="search" required class="searchField" placeholder="Search this site" maxlength="50"/>
+                    <span class="input-group-btn"> <button type="submit" class="search-button btn btn-primary"> <span class="glyphicon glyphicon-search"></span> </button> </span>
+                </div>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<!-- Main content -->
+
+<h1>On Simpson's Paradox.</h1>
+
+<div>
+    <ul class="topics">
+        <li><a href="blog.html">data science</a></li>
+    </ul>
+</div>
+
+<p>
+
+<h3>TL;DR: </h3>
+In this short note, we try to discover Simpson's paradox for ourselves. Albeit, we are guided by a vague memory of having
+seen it before. As a byproduct, we land upon a necessary and sufficient condition for Simpson's paradox to manifest
+itself in actual data.
+
+<h3>Target Audience:</h3>
+Data Science practitioners.
+
+
+<h3>Why:</h3>
+<ul>
+    <li>First, the paradox in itself, is an extremely important facet of statistics and data science which may
+        influence important decisions in real life. To quote
+    <a href="http://ftp.cs.ucla.edu/pub/stat_ser/r414.pdf">Judea Pearl</a> about the reversal that is implicit
+    in the paradox, that "reversal may lead to difficult choices in critical decision-making situations''.</li>
+    <li>I can safely say that this is the one
+    phenomenon that I almost surely choose in order to describe some data science magic to friends who are not in that area,
+    and more often than not, I have stumbled. To the very many friends and family members, whom I have befuddled by my messy
+        effort at elucidating
+        this beautiful fact/paradox, many apologies.</li>
+    <li>More often than not, in order to understand a phenomenon, it is fruitful to understand the simplest examples for
+    that phenomenon. The writing below is an effort in that direction, vis-a-vis Simpson's Paradox.</li>
+	<!--
+    <li>On a personal front, I have been meaning to learn
+        <a href="https://d3js.org/">D3</a> for some time now. This afforded just the right opportunity
+    to do so.</li>
+	-->
+</ul>
+</p>
+
+<h3>What:</h3>
+
+<p>
+    Perhaps the shortest description of the paradox is right there in the
+    <a href="https://en.wikipedia.org/wiki/Simpson%27s_paradox">Wikipedia page</a> on Simpson's Paradox (also called
+    the Yule-Simpson effect).
+    At this point, it might help to directly quote <a href="http://ftp.cs.ucla.edu/pub/stat_ser/r414.pdf">Pearl</a>
+    for an English description of the paradox: <i>whereby the association
+    between a pair of variables ($X$, $Y$ ) reverses sign upon conditioning of a third variable, $Z$, regardless of the
+    value taken by Z.</i>
+</p>
+
+<h3>How:</h3>
+This is how we will proceed wrt this topic.
+<ul>
+    <li>We will try to tease out what that English description means - this will lead to a few hiccups.</li>
+    <li>Thus, we will land on the appropriate examples elucidating the paradox.</li>
+    <li>We will tease out some main threads that makes the paradox work, and leave a detailed discussion to
+    a Part 2 of this post.</li>
+</ul>
+
+<h3>Start Off:</h3>
+Herein, let us assume a reader who has seen some form of Simpson's paradox before, and is trying to reconstruct
+it for herself. She remembers that there were some matrices involved, and so armed with that memory, we start off
+describing a matrix. But before that, let us decide on some <i>nomenclature</i>.
+It would help to carry along a concrete use-case/example in mind. We will call this the
+<h4>Story</h4>
+
+Let us imagine that there is a (fictitious)
+college with <i>just two</i> departments (namely, "Mechanical Engg." and "Civil Engg.") - any student in the college
+is in <i>exactly one</i> of these two departments. We are considering the male and female populations of the departments
+and the college as a whole. Thus, in view of the English description of the paradox above, we will
+set $X = \textrm{Women}$, $Y = \textrm{Men}$ and $Z$ would be a Boolean corresponding to being a member of the
+"Mechanical Engg." department (so that $\neg Z$ corresponds to "Civil Engg.").
+
+Thus we can encode the information in the story as a $2\times2$ matrix,
+where
+<ul>
+    <li> (Columns) The columns will correspond to $X = \textrm{Women}$
+and $Y = \textrm{Men}$.
+    </li>
+    <li> (Rows) The rows will correspond to the departments, i.e.
+        "Mechanical Engg." and "Civil Engg." - these will correspond to $Z$ and $\neg Z$ (i.e. presence
+        or absence of the third conditioning variable). </li>
+    <li> (Entries) Also, let each entry of the matrix be the <i>number</i> of men/women in the
+        corresponding department. </li>
+</ul>
+
+Here, we present a sample $2\times 2$ matrix $\mathbf{A}$:
+
+<div class="wrapper">
+    <div class="box" style="opacity:0;"></div>
+    <div class="box column-header">Women</div>
+    <div class="box column-header">Men</div>
+    <div class="box row-header">Mech.</div>
+    <div class="box entry">$5$</div>
+    <div class="box entry">$4$</div>
+    <div class="box row-header">Civil</div>
+    <div class="box entry">$3$</div>
+    <div class="box entry">$2$</div>
+</div>
+
+
+<!--
+$$\mathbf{A} = \left.\left[
+\vphantom{\begin{array}{c}1\\1\end{array}}
+\smash{\underbrace{
+\begin{array}{cc}
+5&4\\
+3&2\
+\end{array}
+}_{\text{$X$, $Y$}}}
+\right]\right\}
+\,\text{$Z$, $\neg Z$}
+$$
+-->
+
+<h4>The Association:</h4>
+<p>
+    We may also vaguely recall in case we have encountered Simpson's paradox before,
+    that the <i>association</i> that we are looking for was a comparison between the columns
+    $X$ and $Y$, for each of the rows.
+</p>
+<p>
+    More importantly, the association/comparison is to be such that we will evaluate
+    it for either of the rows, and also for the <i>sum of the rows</i> together. What will that correspond to?
+    The
+    evaluation of the association for the first row, would correspond to the situation where the conditioning variable
+    $Z$ is <i>present</i>. Evaluating the comparison for the second row would likewise correspond to the situation where
+    the conditioning variable $Z$ is absent. Finally, if we add the two rows, and evaluate the same comparison, this
+    would correspond to the overall situation (where $Z$ may be present or absent - we don't care).
+</p>
+
+<p>
+Note that, this may seem like a lot of foolhardy work, but now that we have clarified what we are looking for, we can
+go actively hunt for our paradox.
+</p>
+
+<h4>False Start 1:</h4>
+One easy association we can look for is whether the entry for $\textrm{Women}$ in a row is <i>greater than</i>
+the entry for $\textrm{Men}$ in the same row. For instance in the example above, for both of the departments,
+the number of $\textrm{Women}$ is greater than the number of $\textrm{Men}$. So, when we sum the two rows together,
+thereby removing the conditioning of the variable $Z$, this same association still holds (in this example,
+the total number of Women across departments is $5 + 3 = 8$ while the total number of Men is $4 + 2 = 6$).
+
+<h4>False Start 2:</h4>
+The false start 1 indicates that the paradox cannot deal with just numbers - in the case of numbers/integers,
+we cannot expect a <i>reversal</i> of association. The next thing to try should be with <i>ratios</i>!
+
+<p>
+    Note that for this, we will have to adapt the story slightly, in order to accomodate the modification that
+    entries are now <i>ratios</i> instead of plain ole <i>integers</i>. Let us describe a sample matrix $\mathbf{B}$:
+</p>
+
+<!--
+$$\mathbf{B} = \left.\left[
+\vphantom{\begin{array}{c}1\\1\end{array}}
+\smash{\underbrace{
+\begin{array}{cc}
+1/2&1/3\\
+3/6&2/5
+\end{array}
+}_{\text{$X$, $Y$}}}
+\right]\right\}
+\,\text{$Z$, $\neg Z$}
+$$
+-->
+
+<div class="wrapper">
+    <div class="box" style="opacity:0;"></div>
+    <div class="box column-header">Women</div>
+    <div class="box column-header">Men</div>
+    <div class="box row-header">Mech.</div>
+    <div class="box entry">$\frac{1}{2}$</div>
+    <div class="box entry">$\frac{1}{3}$</div>
+    <div class="box row-header">Civil</div>
+    <div class="box entry">$\frac{3}{6}$</div>
+    <div class="box entry">$\frac{2}{5}$</div>
+</div>
+
+
+<br>
+How do we interpret the ratios in this matrix? Given the setting of genders, and departments, it should be
+easy to give a new interpretation for the ratio entries of the matrix. The reader is encouraged to come up
+with her own interpretation.
+
+<ul>
+    <li> (Entries) Let each entry of the matrix be the <i>ratio</i> of women (or men) who
+        <i>pass</i> in the
+        corresponding department, where the denominator is the <i>total</i> number of
+        women (or men) and the numerator is the number who actually <i>pass</i>. </li>
+</ul>
+
+For instance, from the scenario encoded in matrix $\mathbf{B}$, $3$ out of $6$ women in the Civil Engg.
+department pass their exams.
+<br><br>
+Again, we choose the <i>association</i> as this ratio being larger for women versus men. In this case, for
+the Mechanical Engg. department, this does hold true. So also for the Civil Engg. department. And if you
+sum up the total numbers of women and passing women (and also men, and passing men separately), we get that
+out of $8$ women (across the two departments), $4$ of them pass. While for men, the numbers are:
+out of $8$ men, $3$ men pass. Hmm, the association - that a larger ratio of women pass than men -
+still seems to hold.
+<p>
+Let us understand more clearly as to why the current setup
+    <i>did not</i> lead to a reversal. Consider the matrix $\mathbf{C}$:
+</p>
+<!--
+$$\mathbf{C} = \left[
+\begin{array}{cc}
+\frac{a}{b}&\frac{c}{d}\\
+\frac{m}{n}&\frac{r}{s}
+\end{array}
+\right]
+$$
+-->
+
+<div class="wrapper">
+    <div class="box" style="opacity:0;"></div>
+    <div class="box column-header">Women</div>
+    <div class="box column-header">Men</div>
+    <div class="box row-header">Mech.</div>
+    <div class="box entry">$\frac{a}{b}$</div>
+    <div class="box entry">$\frac{c}{d}$</div>
+    <div class="box row-header">Civil</div>
+    <div class="box entry">$\frac{m}{n}$</div>
+    <div class="box entry">$\frac{r}{s}$</div>
+</div>
+<p>
+    Here, we are supposing the following:
+    <ul>
+    <li>Association for the first row: $a/b > c/d$</li>
+    <li>Association for the second row: $m/n > r/s$</li>
+</ul>
+and we are asking about the association (i.e. whether it gets reversed)
+when the rows are "summed":
+
+$$(a + m)/(b + n) >? (c + r)/(d + s)$$
+</p>
+<p>
+    In this specific example, it turns out that $a/b = m/n$. So if the supposed associations hold,
+    then when the rows are "summed", there will be no association-reversal. How do we show this?
+    To understand this, we will need the following fundamental (and highly useful):
+
+    <h4>Inequality 1</h4>
+If $a/b \geqslant c/d$ then $a/b \geqslant (a + c)/(b + d) \geqslant c/d$. This may also be reformulated
+as $(a + c)/(b + d) \leqslant \max(a/b, c/d)$.
+</p>
+<p>
+    Thus, if $a/b = m/n$, then $(a + m)/(b + n) = a/b = m/n$.
+    Also, since $a/b = m/n > c/d, r/s$ and hence $a/b > \max(c/d, r/s)$, we have that
+    $(a + m)/(b + n) = a/b > \max(c/d, r/s) \geqslant (c + r)/(d + s)$.
+</p>
+Altogether the main reason why the association <i>did not reverse</i> in this case is because
+(for both
+the departments), the <i>ratio of women passing</i> is the same. The reader may convince herself,
+that, analogously, if the ratio of <i>men</i> passing were the same, then we would not have a
+paradoxical situation.
+<p>
+So if at all a paradox has to emerge, we need the ratios of men (or women) passing (across the
+departments) to be different!
+</p>
+
+<h4>And finally, the paradox!</h4>
+This last question/comment is precisely the source of the paradox. Let us agree to call
+a matrix that exemplifies the paradox as a <i><b>paradoxical matrix</b></i>.
+Without further ado, we provide an example of a paradoxical matrix $\mathbf{D}$:
+
+<div class="wrapper">
+    <div class="box" style="opacity:0;"></div>
+    <div class="box column-header">Women</div>
+    <div class="box column-header">Men</div>
+    <div class="box row-header">Mech.</div>
+    <div class="box entry">$\frac{1}{2}$</div>
+    <div class="box entry">$\frac{4}{10}$</div>
+    <div class="box row-header">Civil</div>
+    <div class="box entry">$\frac{10}{30}$</div>
+    <div class="box entry">$\frac{1}{4}$</div>
+</div>
+
+
+Note that for the first department the ratio of women is $1/2$ which is greater than $2/5$ (the ratio
+for men). Similarly for the second department the same association holds: $1/3 > 1/4$. However,
+aggregating the rows give the ratio for women as $11/32 = 0.34375$ whereas for men it is
+$5/14 = 0.357...$. This is the <i>association reversal</i> that Simpson's paradox consists of!
+We have found the paradox!!
+
+<h4>How did we find that?</h4>
+<p>
+    Let us think of the problem slightly abstractly, and it will help if the reader can think in terms of
+    limits. So far, we have seen that a necessary condition for a paradox matrix is that the ratios for
+    women (across departments) are <i>different</i>. At the end of the current section, we will be able to
+    make a very strong statement: that that condition is <i>sufficient</i> too for deriving a paradoxical
+    matrix!
+</p>
+<p>
+    First, let us see the Inequality 1 above in another avatar:
+</p>
+<h4>Inequality 2:</h4>
+
+If $a/b \geqslant c/d$ then $a/b \geqslant (ta + c)(tb + d) \geqslant c/d$ for any $t \in (0, \infty)$.
+<br><br>
+Also note that when $t \rightarrow 0$, the middle ratio tends to $c/d$. At the other extremity, if
+$t \rightarrow \infty$, the middle ratio tends to $a/b$. We will use this
+<em>degree of freedom</em> to play with the ratios so as to achieve our paradox.
+
+<h4>D&eacute;nouement</h4>
+Armed with the above, let us consider a special case where the ratios for women are $1/2$ and $1/3$ -
+the reader is invited to work out any other situation where the ratios are
+<em>different</em>. Let $\mathbf{D}$ now be:
+
+<!--
+$$\mathbf{D} = \left[
+\begin{array}{cc}
+1/2&(k-\epsilon)/2k\\
+1/3&(m -\epsilon)/3m
+\end{array}
+\right]
+$$
+-->
+
+<div class="wrapper">
+    <div class="box" style="opacity:0;"></div>
+    <div class="box column-header">Women</div>
+    <div class="box column-header">Men</div>
+    <div class="box row-header">Mech.</div>
+    <div class="box entry">$\frac{1}{2}$</div>
+    <div class="box entry">$\frac{k-\epsilon}{2k}$</div>
+    <div class="box row-header">Civil</div>
+    <div class="box entry">$\frac{1}{3}$</div>
+    <div class="box entry">$\frac{m-\epsilon}{3m}$</div>
+</div>
+<p>
+    We start off with this template, where the ratios (across departments) for men are
+    <i>only slightly lower</i> than the corresponding ratios for women. This is signified by the
+    $\epsilon$.
+</p>
+<p>
+    Let us outline what our strategy will be.
+    <ul>
+    <li>We will fix the actual numbers for <em>women</em> (who pass) at $1/2$ and $1/3$ for the two
+    departments respectively. So out of a total of $2 + 3 = 5$ women, exactly
+    $1 + 1 = 2$ pass (across all the departments).</li>
+    <li>For men, we will keep the <em>passing</em> ratios as <em>floating</em>, to enable play.
+        Noting that $1/2 \geqslant 1/3$ we will keep the ratio in department 1 as
+        ${(k - \epsilon)t}/{2kt}$ <em>where $t$ is a variable that we are free to choose.</em>
+        The ratio for department 2 is $(m -\epsilon)/3m$ for suitable $m$.
+    </li>
+    <li>The big idea is the following:
+        <ul>
+            <li>We see that for women (across all departments),
+        the passing ratio is $2/5 < 1/2$. For men, however it is
+        $(ta + c)/(tb + d)$ where $a/b = (k-\epsilon)/2k$ and
+                $c/d = (m -\epsilon)/3m$.</li>
+    <li><em>The money statement</em>: We can stretch out $t$ (and appeal to Inequality 2) so that
+        the overall ratio $(ta + c)/(tb + d)$ <em>starts looking</em> more like $a/b$
+        which in this case
+    is <em>pretty close</em> to $1/2$. Indeed, it suffices to stretch out $t$ just so
+        that this ratio
+    is greater than $2/5$ (the passing ratio for women) (see below for how $t$ fits in
+        our description).</li>
+        </ul>
+    </li>
+
+    <div class="wrapper">
+        <div class="box" style="opacity:0;"></div>
+        <div class="box column-header">Women</div>
+        <div class="box column-header">Men</div>
+        <div class="box row-header">Mech.</div>
+        <div class="box entry">$\frac{1}{2}$</div>
+        <div class="box entry">$\frac{t(k-\epsilon)}{2kt}$</div>
+        <div class="box row-header">Civil</div>
+        <div class="box entry">$\frac{1}{3}$</div>
+        <div class="box entry">$\frac{m-\epsilon}{3m}$</div>
+    </div>
+
+    <li>And that's it! This is how we can construct paradoxical matrices!</li>
+    <li>If the reader feels there are too many free variables floating around, let's try
+        setting some of these parameters.
+        <ul>
+            <li>
+                Let $k = 2$, $m = 2$ so that the ratios for men are $a/b = 1/4$ and
+                $c/d = 1/6$. This <em>will not work</em> since no matter what $t$ is, the ratio
+                $(ta + b)/(tc + d)$ will not lie in the desired range $[1/3, 1/2]$.
+            </li>
+            <li>The easy fix is that we need to make $k$ larger. How large? So that we have
+            at least a chance of superseding the overall ratio for women, i.e. $2/5$. So
+            we want $(k-1)/2k > 2/5$ which means $(5k - 5) > 4k$ i.e. $k > 5$. Choosing
+            $k = 6$ gives $(k-1)/2k = 5/12$.</li>
+            <li>How do we choose $t$? Well, this will depend on how <em>low</em> the second
+            passing ratio for men, $(m -\epsilon)/3m$, is. Say, $m = 2$ so that this ratio
+            is $1/6$. Then we want $t$ such that $(5t +1)/(12t + 6) > 2/5$.
+
+            This means $(25t + 5) > (24t + 12)$ i.e. $t > 7$.</li>
+        </ul>
+    </li>
+    <li><b>Bottomline</b>: Given the various parameters $k, m, t$ there is enough freedom to
+        set them right so as to yield the paradox. The reader is invited to try with some
+        (different) setting of passing ratios for women.</li>
+</ul>
+</p>
+
+<h4>Takeaways</h4>
+<ul>
+<li>
+    This concludes our demonstration of the paradox.
+In fact, we ended up
+    arriving at
+    <em>necessary and sufficient</em> conditions for the following question.
+    Suppose we are given a
+    <em>partially filled</em> matrix, i.e. one in which only the entries of a
+    column (or a row) are filled up. When can we extend/complete this to a
+    paradoxical matrix?
+</li>
+<li>
+    We essentially showed that the necessary condition is also sufficient.
+    It is necessary that the filled up column has different ratios as its
+    entries. The long-winded discussion above indicates that this is sufficient too.
+</li>
+    <li>This post was about the mechanics of conjuring examples of paradoxical
+        matrices. How do we <em>really</em> understand/resolve Simpson's paradox?
+        For now, I refer the reader to Judea Pearl's
+        <a href="http://ftp.cs.ucla.edu/pub/stat_ser/r414.pdf">excellent article</a> on this topic - I
+        hope to make that the subject matter of another post.
+</li>
+</ul>
+
+
+<div>
+    <ul class="topics">
+        <li><a href="google.com">data science</a></li>
+    </ul>
+</div>
+
+<h4>References:</h4>
+<ol>
+    <!--
+    <li><a href="http://bl.ocks.org/srosenthal/2770072">D3.js Matrix Visualization.</a></li>
+    -->
+    <li><a href="http://ftp.cs.ucla.edu/pub/stat_ser/r414.pdf">Understanding Simpson's Paradox</a> by Judea Pearl.</li>
+</ol>
+<!-- Sign and date the page, it's only polite! -->
+<address>Created 8 June 2017.<br>
+</address>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+</body>
+</html>

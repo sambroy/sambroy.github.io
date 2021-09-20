@@ -1,0 +1,5 @@
+blog.html
+determinant.html
+simpson.html
+combinations.html
+fubini.html

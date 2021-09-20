@@ -1,0 +1,63 @@
+.wrapper {
+margin: 40px;
+margin: 0px auto;
+width: 25%;
+  display: grid;
+  grid-template-columns: 90px 90px 90px;
+  grid-template-rows: 90px 90px 90px;
+  grid-gap: 10px;
+  grid-row-gap: inherit;
+  grid-column-gap: inherit;
+  background-color: rgba(0,0,0,0.0001);
+  color: #444;
+}
+
+.wrapper2 {
+margin: 40px;
+margin: 0px auto;
+width: 25%;
+  display: grid;
+  grid-template-columns: 90px 90px 90px 90px;
+  grid-template-rows: 90px 90px 90px;
+  grid-gap: 0px;
+  grid-row-gap: inherit;
+  grid-column-gap: inherit;
+  background-color: rgba(0,0,0,0.0001);
+  color: #444;
+}
+
+.box {
+  background-color: #91bfea;
+  color: #fff;
+ /* border-radius: 5px; */
+  padding: 20px;
+  font-size: 150%;
+  width: 80px;
+  height: 80px;
+  background: #91bfea;
+  font-size: 24px;
+text-align: center;
+vertical-align: middle;
+line-height: 40px; /* this is what helps center it vertically, along with vertical-align */
+/* border: 1px solid gray; */
+}
+
+.entry{
+		border: 1px solid gray;
+}
+
+.column-header{
+font-size: 18px; 
+opacity:1;
+background-color:rgba(0,0,0,0.0001);
+color:#000; 
+outline:none;
+align-self:end;
+justify-self:start;
+}
+
+.row-header{
+font-size:18px;
+background-color:rgba(0,0,0,0.0001);
+color:#000;
+}

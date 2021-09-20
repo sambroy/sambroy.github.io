@@ -1,0 +1,378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <link rel="stylesheet" href="../css/pygments.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/blogStyle.css">
+
+    <title>Generating Combinations</title>
+
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="../index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="../content/resume.2017.pdf">Resum&eacute;</a></li>
+                <li class="active"><a href="blog.html"><span class="glyphicon glyphicon-book"></span> Writings</a></li>
+                <li><a href="../reading.html"><span class="glyphicon glyphicon-duplicate"></span> Reading List</a></li>
+            </ul>
+
+            <script>
+//GOOGLE SEARCH
+//Enter domain of site to search.
+var domainroot="sambuddharoy.com"
+function Gsitesearch(curobj){ curobj.q.value="site:"+domainroot+" "+curobj.qfront.value }
+</script>
+            <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get"role="search" onSubmit="Gsitesearch(this)">
+                <div class="input-group"> <input name="q" type="hidden" />
+                    <input class="form-control" name="qfront" type="search" required class="searchField" placeholder="Search this site" maxlength="50"/>
+                    <span class="input-group-btn"> <button type="submit" class="search-button btn btn-primary"> <span class="glyphicon glyphicon-search"></span> </button> </span>
+                </div>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<!-- Main content -->
+
+<h1>Generating Combinations.</h1>
+
+<div>
+    <ul class="topics">
+        <li><a href="blog.html">programming</a></li>
+    </ul>
+</div>
+
+<p>
+
+<h3>TL;DR: </h3>
+In this short note, we discuss and dissect a program for generating all the combinations of a collection/set of $n$ characters, $r$ at a time.
+For $r$-combinations of $n$ objects, the program will generate all $n \choose r$ combinations.
+
+<h3>Target Audience:</h3>
+Beginners in programming. Prerequisite: working/basic knowledge of Python.
+
+<h3>Background:</h3>
+While I was going through the Python Docs for <a href="https://docs.python.org/2/library/itertools.html">itertools</a> I came 
+across the following pretty program for generating all the combinations of a set of characters.
+
+
+<h3>Why:</h3>
+<ul>
+	<li>Leads to improved understanding (by comparing and contrasting) the algo & code for generating permutations. We will talk about that
+		in another blog article.</li>
+	<li> We get to learn the use of a construct in Python (at least one that I hadn't known or used before). </li>
+	<li> Personal amusement. </li>
+</ul>
+
+    </p>
+<iframe src="https://trinket.io/embed/python/dc648a7d0f" width="100%" height="500" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+<h3>How we will proceed</h3>
+<ul>
+<li>The reader is invited to try out the <a href="https://trinket.io">trinket</a> code snippet placed above. Click Run to
+    execute the code. Play with a couple of more inputs.
+    Have a cursory
+    glance at the code, see which parts are appearing unfamiliar, etc. Then, forget it :-). </li>
+<li>Now start with the Analysis section below. This section will at first reading appear onerous - since I show the reader
+how to design invariants in order to reason about the program. This is a thought process that pays enormous dividends after
+it has been internalized - though at first look, it might appear pedantic and daunting.</li>
+<li>By the end, we would have reconstructed the code above (more or less). We will also try to modularize some of the code
+above that translates our understanding of the problem directly.</li>
+    <li> Finally, we will list out the main take-aways from this exercise.</li>
+</ul>
+
+<h3>Analysis:</h3>
+
+<h4>Decide on an order:</h4>
+Let us start with the desiderata: we would like to generate all the combinations of a set of $n$ characters, $r$ at a time.
+What is <i>not</i> specified is the <i>order</i> in which we need to generate these combinations in. That is up to us.
+It is quite popular (in Computer Science, as also elsewhere) to generate objects in what is called the
+<a href="https://en.wikipedia.org/wiki/Lexicographical_order">lexicographical order</a> (also called dictionary order).
+This is a (natural) order of choice, and we will adopt this for our purposes.
+<br><br>
+Also observe that given the set of $n$ characters input as an <i>array</i>,
+we essentially want to consider the <i>indices</i> of the array, while generating the combinations. This makes sense
+because the actual set of characters can be any arbitrary set, without any specified ordering between them (say for instance,
+all the punctuation marks of the English language).
+We will be generating
+combinations in a lexicographical ordering of these indices (so $023$ comes before $034$ etc.).
+<br><br>
+Sample lexicographical ordering (for $n=5$, $r = 3$): $012 < 013< 014 < 023 < 024 < 034 < 123 < 124 < 134 < 234$.
+
+<h4> Start writing code:</h4>
+When we try to start writing code, we come across our first problem:
+<ul>
+    <li>There are <i>two</i> essential parameters in the problem,
+$n$ and $r$. If the set of all indices is $\{0, 1, \cdots, n-1\}$, then we are picking up $r$ subsets of this
+<i>universe</i>. (Why subsets? Because these are combinations. If we end up selecting the subset $\{1, 3, 4\}$ that
+corresponds to precisely one combination - and vice versa). So we can think of keeping two variables:
+        $\mathrm{universe} = \mathrm{range}(n)$ or $\mathrm{indices} = \mathrm{range}(r)$. </li>
+    <li>The dilemma here is: we will need an array of $r$ elements, but those elements can be anywhere in
+    $\mathrm{range}(n)$. How do we manage this?</li>
+    <li>The easiest way of setting aside storage for $r$ elements is to set $\mathrm{indices} = \mathrm{range}(r)$.
+    Here, we are slightly stretching our mind. Let this be the <i>initialization</i> of the $\mathrm{indices}$ array!</li>
+    <li><b>Bottomline</b>: Since the algorithm need only output the indices of the $r$-subsets, we will not need the $\mathrm{universe}$ as an
+    explicit set (of course we will need the value of $n$). Hence, we keep $\mathrm{indices} = \mathrm{range}(r)$ (Look at line 8
+    of the code above).</li>
+</ul>
+
+<h4>Observe transitions according to the order:</h4>
+Once we have chosen the order (as above) in which to generate the combinations, it would help to look at a few sample cases
+to see how the <i>transitions</i> work from one combination to the next. <br>
+
+Looking at the sequence of $5 \choose 3$ combinations above (for the combinations for $n = 5$ and $r = 3$),
+we notice that the changes seem to be starting
+at the <i>end</i> of the sequence - or more accurately, in <i>reverse</i> order.
+Mapping back to arbitrary $n$ and $r$ (from this tiny example),
+the start of the sequence is $\mathrm{range}(r)$ and
+the <b>end</b> of the sequence is $\{ n-r, n-r + 1, \cdots, n - 1\}$.
+
+<h4>Aside 1:</h4>
+Here's a Python puzzle: you are given input $\mathrm{range}(r)$ and you have to output $\{ n-r, n-r + 1, \cdots, n - 1\}$.
+I.e. you have to output the same array, with $n-r$ added to each element of the array.
+<ul>
+    <li> One way is to use Python list comprehensions, given input array $A$, and if we wanted to increase each
+        array element by an amount $t$ to generate array $B$:
+        <div class="highlight-python"><div class="highlight"><pre>
+<span class="p">B</span> <span class="o">=</span> <span class="p">[</span><span class="p">x</span><span class="o">+</span><span class="p">t</span> <span class="k">for</span> <span class="p">x</span> <span class="k">in</span> <span class="p">A</span><span class="p">]</span>
+</pre></div>
+        </div>
+    </li>
+    <li> Or, use numpy arrays (see this
+        <a href="http://stackoverflow.com/questions/5754571/sum-one-number-to-every-element-in-a-list-or-array-in-python">SO link</a>):
+        <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nb">numpy</span>
+<span class="p">A1</span><span class="o">=</span><span class="nb">numpy</span><span class="o">.</span><span class="nb">array</span><span class="p">(</span><span class="p">A</span><span class="p">)</span>
+<span class="p">B</span><span class="o">=</span><span class="p">A1</span><span class="o">+</span><span class="p">t</span>
+</pre></div>
+        </div>
+    </li>
+</ul>
+
+<h4>Aside 2:</h4>
+We have decided to cycle through the indices in a lexicographical ordering, and that the array $\mathrm{indices}$ will
+contain these indices. If the original set of characters is $A$, then we will generate the elements of $A$ corresponding
+to the indices in the array $\mathrm{indices}$. Python code for this?
+<br><br>
+<b>Answer:</b> use list comprehensions (again!): B = [A[i] for i in indices]. Look at line 9.
+
+<h4>Design the invariants:</h4>
+The principal task is to design some <i>invariants</i> that will guide our algorithm. (By the way,
+it is always a good idea to reason about algorithms in terms of the invariants that we want.
+Not only does it make for cleaner thought processes, it also helps in proving program correctness.)
+
+This part is the meat of the program (and our discussion). Let's recall the example from above:
+$012 < 013< 014 < 023 < 024 < 034 < 123 < 124 < 134 < 234$.
+<br><br>
+<b>Invariant 1:</b>
+Given the $\mathrm{indices}$ array, at any point in the algorithm, the entries of the array are monotone non-decreasing.
+<br><br>
+This makes sense since we are searching for <i>combinations</i> and we can actually afford to enforce
+this property.
+<br><br>
+In order to introduce Invariant 2, we will introduce some nomenclature.
+Let us try to understand how the transition is made from one combination to the next.
+Specifically, given a combination
+(say, $124$), we will attempt to find out where the next change should occur. As mentioned above,
+we will have to look at the array in the <i> reverse</i> order.
+Given $n = 5$ and $4$ is the maximum any element can go up to, in $124$ the last character has hit a wall. So we keep
+searching for the next element in reverse order (here, a $2$). Has that also hit the wall (i.e. the maximum it can be?).
+Note that for the last-but-one character, the maximum it can be is <i>not</i> $4$ but $3$.
+<h4>Aside 3:</h4>
+For general $n$ and $r$ find out the maximum the $i^{th}$ entry of the array $\mathrm{indices}$ can be.
+<b>Answer</b>: it is $i + n - r$ (see Aside 1).
+
+<h4>Nomenclature:</h4>
+In order to understand code (or papers, research, or what have you) its good to give meaningful names
+to modularize and streamline thinking.
+Let's call an index <i><b>saturated</b></i> if that index is already the maximum it can be; otherwise call an
+index <i><b>unsaturated</b></i>. Thus for instance (with $n = 5$, $r = 3$), in the array $\mathrm{indices} = [0, 2, 4]$,
+the index $2$ is saturated, while indices $0$, $1$ are unsaturated. More specifically, index $i$ is
+<i>saturated</i> if $\mathrm{indices}[i] == i + n - r$ (and unsaturated if the LHS is $<$ RHS).
+We are now ready to describe Invariant 2.
+<br><br>
+<b>Invariant 2:</b>
+Given the $\mathrm{indices}$ array, if some index $i$ is saturated, then all indices
+$(i+1), (i+2), \cdots, (r-1)$ are saturated.
+<br><br>
+This is an easy corollary of the monotonicity enforced by Invariant 1 (why?). This will pave the way for our
+final idea, that will actually give us the solution.
+<br><br>
+<b>Main Idea:</b> Given a combination in $\mathrm{indices}$, the <i>next</i> combination in the lexicographical order
+is obtained by <i>changing</i> the first (from the right, i.e. in reverse order) unsaturated index in the array
+$\mathrm{indices}$.
+<br><br>
+<b>Note:</b> such an unsaturated index might not even exist! When can this happen?
+Well, this means that every index in the array is saturated. But this means that the array
+$\mathrm{indices} = [ (n-r), (n-r +1), \cdots, n - 1]$. This means in turn, that we have reached
+the end of our task - we have generated all the combinations possible!
+<br><br>
+To implement the main idea, we will write code for the following functionality: given an input array $\mathrm{indices}$,
+(and $n$, $r$), return the (unsaturated) index into the array that will be changed next.
+
+<iframe src="https://trinket.io/embed/python/2d5e5e7965" width="100%" height="450" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+What is <b>wrong</b> with this? For the array $\mathrm{indices} = [ 0, 2, 3]$ the output is correct (index $2$ - with indices
+starting with $0$) is right.
+
+However, for the array $\mathrm{indices} = [ 0, 2, 4]$, the answer should be index $1$, but the program bottoms out
+and returns $-1$. What gives?
+
+It is easy to understand a mistake: the first time, we find a <i>saturated</i> index (i.e. $\mathrm{indices}[i]$ equals $i + n - r$)
+in line 10,
+the code does not even
+search for the next $i$ (in the reverse order) but instead aborts it and outputs $-1$.
+<br><br>
+The correct behavior we desire is that
+we need to search the entire array, break-ing (or return-ing) only when we find a <i>unsaturated</i> index. This may
+be implemented by leaving out lines 13 and 14 from the above.
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_index_to_change</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="n">n</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o"><</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">n</span> <span class="o">-</span><span class="p"> r</span><span class="p">)</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">i</span>
+</pre></div>
+</div>
+
+All is good with the above, just that we may fall in the corner case where we
+zip through the entire array without finding an unsaturated index.
+This means that the indices array is
+$[ n - r, n-r+1, \cdots, n-1]$ (i.e. the last member of the sequence of combinations).
+We would then have finished with generating all the combinations, so we can go home happy.
+<br><br>
+In this corner case, we would like to output a default value (say $-1$).
+
+<h4>The interesting Python construct:</h4>
+<p>
+So how do we implement this desired behavior, i.e. of returning a default (say, $-1$) if we are unable to find any
+unsaturated index? <b>Answer:</b> We would need to add an $\mathrm{else}$ clause to the $\mathrm{for}$ loop above.
+</p>
+<p>
+Wait a minute, wha...t? An else-clause paired with the for loop? Yes, such a construct indeed exists - and it finds use in precisely
+such scenarios as this: if we have zipped through a for-loop without break-ing or return-ing from it, then
+the else conditional is reached.
+</p>
+
+This gives us the correct implementation of find_index_to_change:
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_index_to_change</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="n">n</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o"><</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">n</span> <span class="o">-</span><span class="p"> r</span><span class="p">)</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">i</span>
+    <span class="k">else</span></span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">-1</span>
+</pre></div>
+</div>
+Note that this corresponds to adding back on the bottoming-out lines 13 and 14, suitably <i> un-indented</i> as above; I invite the
+reader to go back to the
+<a href="https://trinket.io/python/2d5e5e7965">trinket</a> above and run this out).
+
+<br><br>
+See this <a href="http://stackoverflow.com/questions/9979970/why-does-python-use-else-after-for-and-while-loops">SO link</a>
+for more discussion on this interesting and useful construct!
+
+
+<h4>Finishing up</h4>
+We just have one last module to write. So we know which index to change in the $\mathrm{indices}$ array, what is
+the actual change to be done? This functionality will be encapsulated in the function change_indices:
+it takes as parameters the array $\mathrm{indices}$,
+and $i$, the
+first (from right) unsaturated index in the array $\mathrm{indices}$ (i.e. the output of the function
+find_index_to_change).
+<br><br>
+The work that needs to be done is actually simple. If $i$ is the index that initiates the change, the actual change consists of
+<i>resetting</i> the sub-array $\mathrm{indices}[i:]$. The reset consists of setting this part of the array
+to the lexicographically <i>least</i> admissible value:
+
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">change_indices</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+    <span class="p">r</span> <span class="o">=</span> <span class="k">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="p">1</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i+1</span><span class="p">,</span> <span class="p">r</span><span class="p">):</span>
+        <span class="n">indices</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">j-1</span><span class="p">]</span> <span class="o">+</span><span class="p">1</span>
+    <span class="k">return</span> <span class="p">indices</span>
+</pre></div>
+</div>
+
+<h4>Stitching it together</h4>
+The overall structure of the final program will be as follows:
+<ul>
+    <li>Initialize indices.</li>
+    <li>Repeatedly call find_index_to_change (till it does not return -1) to get index i.</li>
+    <li>Use the function change_indices to change the indices array.</li>
+</ul>
+The final <a href="https://trinket.io/python/80773c558d">trinket</a> is shown below:
+<iframe src="https://trinket.io/embed/python/80773c558d" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+<h4>Final words</h4>
+The reader is invited to revisit the original code snippet, for comparing and contrasting. One thing that the original
+<a href="https://docs.python.org/2/library/itertools.html">code</a> implements is that it takes in an iterable input, and uses generators to "yield" the combinations. This is
+in fact the preferred coding style, see (for instance)
+Jeff Knupp's <a href="https://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/">article</a>,
+more so when we are generating objects (such as combinations, permutations etc.).
+At this point I invite the reader to translate the code to one that uses generators/yield-statements.
+
+<p>
+    I also leave it to the reader to check out the section on <i>permutations</i> on the
+    <a href="https://docs.python.org/2/library/itertools.html">itertools</a> website, and conduct a similar analysis for
+    that code.
+</p>
+<p>
+The main take-aways are
+<ul>
+    <li>It helps to think invariants when formulating algorithmic solutions.</li>
+    <li>Modular thinking helps. Give meaningful names to the different modules, so that code becomes easier to read.</li>
+</ul>
+</p>
+<br>
+<div>
+    <ul class="topics">
+        <li><a href="blog.html">programming</a></li>
+    </ul>
+</div>
+    <!-- Sign and date the page, it's only polite! -->
+<address>Created 19 March 2017.<br>
+</address>
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-sambuddharoy-com.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.
+</a></noscript>
+
+<script id="dsq-count-scr" src="//http-sambuddharoy-com.disqus.com/count.js" async></script>
+</body>
+</html>
