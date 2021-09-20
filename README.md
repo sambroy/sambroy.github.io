@@ -1,6 +1,6 @@
 # README #
 
-Material for the files in sambuddharoy.com
+Material for the files in https://sambroy.github.io
 
 ### What is this repository for? ###
 
